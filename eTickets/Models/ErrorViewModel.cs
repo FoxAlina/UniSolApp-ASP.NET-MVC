@@ -1,6 +1,6 @@
 using System;
 
-namespace eTickets.Models
+namespace UniversalSolutionApplication.Models
 {
     public class ErrorViewModel
     {

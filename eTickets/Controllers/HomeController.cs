@@ -1,4 +1,4 @@
-﻿using eTickets.Models;
+﻿using UniversalSolutionApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
