@@ -1,4 +1,4 @@
-using eTickets.Data;
+using UniversalSolutionApplication.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;

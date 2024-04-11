@@ -10,19 +10,18 @@ namespace UniversalSolutionApplication.Models
 {
     public class DimensionHeader
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string Id { get; set; }
-        public TableDetailsListType Type { get; set; }
+        [MaxLength(30)]
+        public string Name { get; set; }
+        public TableDetailsListType TableType { get; set; }
+        public DimensionLineType PropertyType { get; set; }
 
         // Relationships
         public List<DimensionLine> Lines { get; set; }
-
-        public string ItemId { get; set; }
-        [ForeignKey("ItemId")]
-        public Item Item { get; set; }
+        public List<DimensionCombination> DimCombs { get; set; }
 
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
 
     }

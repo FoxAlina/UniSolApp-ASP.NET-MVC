@@ -4,23 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using UniversalSolutionApplication.Data.Enums;
 
 namespace UniversalSolutionApplication.Models
 {
-    public class ListLine
+    public class DimensionCombination
     {
-        public float LineNum { get; set; }
-        [MaxLength(30)]
-        public string LotId { get; set; }
-
-        public DateTime CreatedDateTime { get; set; }
+        [MaxLength(20)]
+        public string Id { get; set; }
 
         // Relationships
-        public string ListHeaderId { get; set; }
-        public ListHeader ListHeader { get; set; }
 
         public string ItemId { get; set; }
-        //[ForeignKey("ItemId")]
         public Item Item { get; set; }
+
+        public string DimHeaderId { get; set; }
+        public DimensionHeader DimHeader{ get; set; }
     }
 }

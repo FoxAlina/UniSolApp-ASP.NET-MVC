@@ -9,16 +9,18 @@ namespace UniversalSolutionApplication.Models
 {
     public class ItemGroup
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string Id { get; set; }
-
+        [MaxLength(30)]
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTime CreatedDateTime { get; set; }
 
         // Relationships
+        public List<Item> Items { get; set; }
+        public List<Module> Modules { get; set; }
+
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
 
     }

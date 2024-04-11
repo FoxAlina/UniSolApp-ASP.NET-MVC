@@ -10,29 +10,25 @@ namespace UniversalSolutionApplication.Models
 {
     public class DimensionLine
     {
-        
         public float LineNum { get; set; }
+        [MaxLength(30)]
         public string LotId { get; set; }
-
-        public string Name { get; set; }
         public DimensionLineType Type { get; set; }
-        public int Integer { get; set; }
-        public double Double { get; set; }
-        public bool Bool { get; set; }
-        public string String { get; set; }
-        public ProgressStatus Status { get; set; }
-        public string URL { get; set; }
-        public DateTime DateTime { get; set; }
+        public int? Integer { get; set; }
+        public double? Double { get; set; }
+        public bool? Bool { get; set; }
+        public string? String { get; set; }
+        public ProgressStatus? Status { get; set; }
+        public string? URL { get; set; }
+        public DateTime? DateTime { get; set; }
 
         // Relationships
-        //public List<Module> Modules { get; set; }
 
-        public string DimHeaderId { get; set; }
-        [ForeignKey("DimensionHeaderId")]
+        public string DimensionHeaderId { get; set; }
         public DimensionHeader DimensionHeader { get; set; }
 
-        public string ItemId { get; set; }
-        [ForeignKey("ItemId")]
-        public Item Item { get; set; }
+        public string? ItemId { get; set; }
+        //[ForeignKey("ItemId")]
+        public Item? Item { get; set; }
     }
 }

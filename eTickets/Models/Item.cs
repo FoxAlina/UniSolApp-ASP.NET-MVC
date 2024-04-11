@@ -1,4 +1,4 @@
-﻿using eTickets.Data;
+﻿using UniversalSolutionApplication.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,26 +10,27 @@ namespace UniversalSolutionApplication.Models
 {
     public class Item
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string Id { get; set; }
 
-        public string ProfilePictureURL { set; get; }
+        public string? ProfilePictureURL { set; get; }
+        [MaxLength(30)]
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTime CreatedDateTime { get; set; }
 
         // Relationships
+        public List<DimensionCombination> DimCombs { get; set; }
+        public List<DimensionLine> DimLines { get; set; }
+        public List<ListLine> ListLines { get; set; }
 
         public string ItemGroupId { get; set; }
-        [ForeignKey("ItemGroupId")]
         public ItemGroup ItemGroup { get; set; }
         
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
 
         public string ModuleId { get; set; }
-        [ForeignKey("ModuleId")]
         public Module Module { get; set; }
 
     }

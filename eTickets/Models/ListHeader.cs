@@ -10,9 +10,8 @@ namespace UniversalSolutionApplication.Models
 {
     public class ListHeader
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string Id { get; set; }
-        public string ProfilePictureURL { set; get; }
         public ItemModuleType Type { get; set; }
         public DateTime CreatedDateTime { get; set; }
 
@@ -22,12 +21,11 @@ namespace UniversalSolutionApplication.Models
         public string ModuleId { get; set; }
         [ForeignKey("ModuleId")]
         public Module Module { get; set; }
-        public string ModuleRefId { get; set; }
+        public string? ModuleRefId { get; set; }
         [ForeignKey("ModuleRefId")]
-        public Module ModuleRef { get; set; }
+        public Module? ModuleRef { get; set; }
 
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
 
     }
