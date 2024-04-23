@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace UniversalSolutionApplication.Data.Enums
 {
-    public enum ItemModuleType
+    public enum ItemStatus
     {
-        AllItems,
-        Module,
-        Submodule,
-        ItemGroup,
-        Property // Dimension header
+        Open,
+        Closed
     }
 }

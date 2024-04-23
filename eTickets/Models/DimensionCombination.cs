@@ -16,9 +16,14 @@ namespace UniversalSolutionApplication.Models
         // Relationships
 
         public string ItemId { get; set; }
+        public string ItemUserId { get; set; }
         public Item Item { get; set; }
 
         public string DimHeaderId { get; set; }
+        public string DimHeaderUserId { get; set; }
         public DimensionHeader DimHeader{ get; set; }
+
+        public string UserId { get; set; }
+        public User User { get; set; }
     }
 }

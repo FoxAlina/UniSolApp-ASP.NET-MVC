@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace UniversalSolutionApplication.Data.Enums
 {
-    public enum ItemModuleType
+    public enum DomainType
     {
-        AllItems,
-        Module,
-        Submodule,
-        ItemGroup,
-        Property // Dimension header
+        Public,
+        Friend,
+        Private,
+        Internal
     }
 }

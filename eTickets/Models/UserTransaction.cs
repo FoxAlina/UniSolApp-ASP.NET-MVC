@@ -17,19 +17,15 @@ namespace UniversalSolutionApplication.Models
 
         // Relationships
         public string ItemId { get; set; }
-        [ForeignKey("UserId")]
         public Item Item { get; set; }
 
         public string ModuleId { get; set; }
-        [ForeignKey("UserId")]
         public Module Module { get; set; }
 
         public string ListId { get; set; }
-        [ForeignKey("UserId")]
         public ListHeader List { get; set; }
 
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

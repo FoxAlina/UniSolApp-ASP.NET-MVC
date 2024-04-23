@@ -25,10 +25,14 @@ namespace UniversalSolutionApplication.Models
         // Relationships
 
         public string DimensionHeaderId { get; set; }
+        public string DimHeaderUserId { get; set; }
         public DimensionHeader DimensionHeader { get; set; }
 
         public string? ItemId { get; set; }
-        //[ForeignKey("ItemId")]
+        public string? ItemUserId { get; set; }
         public Item? Item { get; set; }
+
+        public string UserId { get; set; }
+        public User User { get; set; }
     }
 }
