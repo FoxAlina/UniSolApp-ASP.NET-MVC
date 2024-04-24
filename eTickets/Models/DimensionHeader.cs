@@ -24,8 +24,6 @@ namespace UniversalSolutionApplication.Models
         public List<DimensionCombination> DimCombs { get; set; }
         public List<Module> Modules { get; set; }
         public List<DimensionHeader> LinkDimHeaders { get; set; }
-
-        public List<ListHeader> ListHeaders { get; set; }
         public List<ListHeader> ListHeaderRefs { get; set; }
 
 

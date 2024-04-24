@@ -29,8 +29,7 @@ namespace UniversalSolutionApplication.Models
         public List<Module> Modules { get; set; }
         public List<Item> Items { get; set; }
         public List<Follower> Followers { get; set; }
+        public List<Follower> UserRefs { get; set; }
         public List<UserTransaction> Trans { get; set; }
-
-        public List<Follower> Users { get; set; }
     }
 }

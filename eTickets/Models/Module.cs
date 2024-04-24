@@ -29,7 +29,7 @@ namespace UniversalSolutionApplication.Models
         public List<Module> ModuleRefs { get; set; }
 
         public List<ListHeader> ListHeaders { get; set; }
-        public List<ListHeader> LisHeaderRefs { get; set; }
+        public List<ListHeader> ListHeaderRefs { get; set; }
 
         public string? ModuleRefId { get; set; }
         public string? ModuleRefUserId { get; set; }

@@ -25,6 +25,8 @@ namespace UniversalSolutionApplication.Models
         public string ListId { get; set; }
         public ListHeader List { get; set; }
 
+        public string TransLinkUserId { get; set; }
+
         public string UserId { get; set; }
         public User User { get; set; }
     }

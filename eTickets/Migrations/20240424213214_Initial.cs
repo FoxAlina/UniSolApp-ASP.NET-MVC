@@ -30,7 +30,7 @@ namespace UniversalSolutionApplication.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    UserRefId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     FollowerRefId = table.Column<string>(type: "nvarchar(20)", nullable: false)
                 },
                 constraints: table =>
@@ -41,10 +41,10 @@ namespace UniversalSolutionApplication.Migrations
                         column: x => x.FollowerRefId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Follower_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Follower_User_UserRefId",
+                        column: x => x.UserRefId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -106,32 +106,25 @@ namespace UniversalSolutionApplication.Migrations
                 name: "DimensionLine",
                 columns: table => new
                 {
-                    LineNum = table.Column<float>(type: "real", nullable: false),
+                    LineNum = table.Column<float>(type: "real(20)", precision: 20, scale: 2, nullable: false),
                     DimensionHeaderId = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    DimHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     LotId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Integer = table.Column<int>(type: "int", nullable: true),
-                    Double = table.Column<double>(type: "float", nullable: true),
+                    Double = table.Column<double>(type: "float(15)", precision: 15, scale: 2, nullable: true),
                     Bool = table.Column<bool>(type: "bit", nullable: true),
                     String = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true),
                     URL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DimHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ItemId = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     ItemUserId = table.Column<string>(type: "nvarchar(20)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DimensionLine", x => new { x.DimensionHeaderId, x.LineNum, x.UserId });
+                    table.PrimaryKey("PK_DimensionLine", x => new { x.DimensionHeaderId, x.LineNum, x.DimHeaderUserId });
                     table.UniqueConstraint("AK_DimensionLine_LotId", x => x.LotId);
-                    table.ForeignKey(
-                        name: "FK_DimensionLine_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,21 +146,11 @@ namespace UniversalSolutionApplication.Migrations
                     DimHeaderRefId = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     DimHeaderRefUserId = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     LinkListHeaderId = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    LinkListHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    DimensionHeaderId = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    DimensionHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    ItemGroupId = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    ItemGroupUserId = table.Column<string>(type: "nvarchar(20)", nullable: true)
+                    LinkListHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ListHeader", x => new { x.Id, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_ListHeader_ItemGroup_ItemGroupId_ItemGroupUserId",
-                        columns: x => new { x.ItemGroupId, x.ItemGroupUserId },
-                        principalTable: "ItemGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ListHeader_ItemGroup_ItemGroupRefId_ItemGroupRefUserId",
                         columns: x => new { x.ItemGroupRefId, x.ItemGroupRefUserId },
@@ -315,7 +298,7 @@ namespace UniversalSolutionApplication.Migrations
                         columns: x => new { x.ItemGroupId, x.ItemGroupUserId },
                         principalTable: "ItemGroup",
                         principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Item_Module_ModuleId_ModuleUserId",
                         columns: x => new { x.ModuleId, x.ModuleUserId },
@@ -334,37 +317,30 @@ namespace UniversalSolutionApplication.Migrations
                 name: "ListLine",
                 columns: table => new
                 {
-                    LineNum = table.Column<float>(type: "real", nullable: false),
+                    LineNum = table.Column<float>(type: "real(20)", precision: 20, scale: 2, nullable: false),
                     ListHeaderId = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    ListHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     LotId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ListHeaderUserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ItemId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ItemUserId = table.Column<string>(type: "nvarchar(20)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ListLine", x => new { x.ListHeaderId, x.LineNum, x.UserId });
+                    table.PrimaryKey("PK_ListLine", x => new { x.ListHeaderId, x.LineNum, x.ListHeaderUserId });
                     table.UniqueConstraint("AK_ListLine_LotId", x => x.LotId);
                     table.ForeignKey(
                         name: "FK_ListLine_Item_ItemId_ItemUserId",
                         columns: x => new { x.ItemId, x.ItemUserId },
                         principalTable: "Item",
                         principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ListLine_ListHeader_ListHeaderId_ListHeaderUserId",
                         columns: x => new { x.ListHeaderId, x.ListHeaderUserId },
                         principalTable: "ListHeader",
                         principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ListLine_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -377,26 +353,27 @@ namespace UniversalSolutionApplication.Migrations
                     ItemId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ModuleId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ListId = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    TransLinkUserId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(20)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserTransaction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserTransaction_Item_ItemId_UserId",
-                        columns: x => new { x.ItemId, x.UserId },
+                        name: "FK_UserTransaction_Item_ItemId_TransLinkUserId",
+                        columns: x => new { x.ItemId, x.TransLinkUserId },
                         principalTable: "Item",
                         principalColumns: new[] { "Id", "UserId" },
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTransaction_ListHeader_ListId_UserId",
-                        columns: x => new { x.ListId, x.UserId },
+                        name: "FK_UserTransaction_ListHeader_ListId_TransLinkUserId",
+                        columns: x => new { x.ListId, x.TransLinkUserId },
                         principalTable: "ListHeader",
                         principalColumns: new[] { "Id", "UserId" },
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTransaction_Module_ModuleId_UserId",
-                        columns: x => new { x.ModuleId, x.UserId },
+                        name: "FK_UserTransaction_Module_ModuleId_TransLinkUserId",
+                        columns: x => new { x.ModuleId, x.TransLinkUserId },
                         principalTable: "Module",
                         principalColumns: new[] { "Id", "UserId" },
                         onDelete: ReferentialAction.Cascade);
@@ -409,14 +386,22 @@ namespace UniversalSolutionApplication.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionCombination_DimHeaderId_DimHeaderUserId",
+                name: "DimCombIdx",
                 table: "DimensionCombination",
-                columns: new[] { "DimHeaderId", "DimHeaderUserId" });
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionCombination_ItemId_ItemUserId",
+                name: "DimHeaderIdx",
                 table: "DimensionCombination",
-                columns: new[] { "ItemId", "ItemUserId" });
+                columns: new[] { "DimHeaderId", "DimHeaderUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id" });
+
+            migrationBuilder.CreateIndex(
+                name: "ItemIdx",
+                table: "DimensionCombination",
+                columns: new[] { "ItemId", "ItemUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DimensionCombination_UserId",
@@ -424,9 +409,10 @@ namespace UniversalSolutionApplication.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionHeader_LinkHeaderId_LinkHeaderUserId",
+                name: "DimHeaderIdx1",
                 table: "DimensionHeader",
-                columns: new[] { "LinkHeaderId", "LinkHeaderUserId" });
+                columns: new[] { "Id", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DimensionHeader_ListHeaderId_ListHeaderUserId",
@@ -434,34 +420,72 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "ListHeaderId", "ListHeaderUserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionHeader_UserId",
+                name: "LinkDimHeaderIdx",
                 table: "DimensionHeader",
-                column: "UserId");
+                columns: new[] { "LinkHeaderId", "LinkHeaderUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionLine_DimensionHeaderId_DimHeaderUserId",
+                name: "ListIdx",
+                table: "DimensionHeader",
+                column: "ListHeaderId")
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "UserIdx",
+                table: "DimensionHeader",
+                column: "UserId")
+                .Annotation("SqlServer:Include", new[] { "Id" });
+
+            migrationBuilder.CreateIndex(
+                name: "DimHeaderIdx2",
                 table: "DimensionLine",
-                columns: new[] { "DimensionHeaderId", "DimHeaderUserId" });
+                columns: new[] { "DimensionHeaderId", "DimHeaderUserId" })
+                .Annotation("SqlServer:Include", new[] { "LotId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionLine_ItemId_ItemUserId",
+                name: "ItemIdx1",
                 table: "DimensionLine",
-                columns: new[] { "ItemId", "ItemUserId" });
+                columns: new[] { "ItemId", "ItemUserId" })
+                .Annotation("SqlServer:Include", new[] { "LotId", "LineNum", "DimensionHeaderId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DimensionLine_UserId",
+                name: "LineNumIdx",
                 table: "DimensionLine",
-                column: "UserId");
+                columns: new[] { "DimensionHeaderId", "LineNum", "DimHeaderUserId" },
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "LotId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Follower_FollowerRefId",
+                name: "FollowerIdx",
                 table: "Follower",
-                column: "FollowerRefId");
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Follower_UserId",
+                name: "FollowerRefIdx",
                 table: "Follower",
-                column: "UserId");
+                column: "FollowerRefId")
+                .Annotation("SqlServer:Include", new[] { "Id" });
+
+            migrationBuilder.CreateIndex(
+                name: "UserRefIdx",
+                table: "Follower",
+                column: "UserRefId")
+                .Annotation("SqlServer:Include", new[] { "Id" });
+
+            migrationBuilder.CreateIndex(
+                name: "ItemGroupIdx",
+                table: "Item",
+                column: "ItemGroupId")
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ModuleId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "ItemIdx2",
+                table: "Item",
+                columns: new[] { "Id", "UserId" },
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "ItemGroupId", "ModuleId", "Name" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_ItemGroupId_ItemGroupUserId",
@@ -469,19 +493,33 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "ItemGroupId", "ItemGroupUserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_LinkItemId_LinkItemUserId",
-                table: "Item",
-                columns: new[] { "LinkItemId", "LinkItemUserId" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Item_ModuleId_ModuleUserId",
                 table: "Item",
                 columns: new[] { "ModuleId", "ModuleUserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_UserId",
+                name: "LinkItemIdx",
                 table: "Item",
-                column: "UserId");
+                columns: new[] { "LinkItemId", "LinkItemUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ItemGroupId", "ModuleId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "ModuleIdx",
+                table: "Item",
+                column: "ModuleId")
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ItemGroupId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "UserIdx1",
+                table: "Item",
+                column: "UserId")
+                .Annotation("SqlServer:Include", new[] { "Id", "ItemGroupId", "ModuleId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "ItemGroupIdx1",
+                table: "ItemGroup",
+                columns: new[] { "Id", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemGroup_LinkItemGroupId_LinkItemGroupUserId",
@@ -489,109 +527,158 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "LinkItemGroupId", "LinkItemGroupUserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemGroup_UserId",
+                name: "LinkItemGroupIdx",
                 table: "ItemGroup",
-                column: "UserId");
+                column: "LinkItemGroupId")
+                .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_DimensionHeaderId_DimensionHeaderUserId",
+                name: "UserIdx2",
+                table: "ItemGroup",
+                column: "UserId")
+                .Annotation("SqlServer:Include", new[] { "Id" });
+
+            migrationBuilder.CreateIndex(
+                name: "DimHeaderRefIdx",
                 table: "ListHeader",
-                columns: new[] { "DimensionHeaderId", "DimensionHeaderUserId" });
+                columns: new[] { "DimHeaderRefId", "DimHeaderRefUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ModuleId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_DimHeaderRefId_DimHeaderRefUserId",
+                name: "ItemGroupRefIdx",
                 table: "ListHeader",
-                columns: new[] { "DimHeaderRefId", "DimHeaderRefUserId" });
+                columns: new[] { "ItemGroupRefId", "ItemGroupRefUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ModuleId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_ItemGroupId_ItemGroupUserId",
+                name: "LinkListHeaderIdx",
                 table: "ListHeader",
-                columns: new[] { "ItemGroupId", "ItemGroupUserId" });
+                columns: new[] { "LinkListHeaderId", "LinkListHeaderUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ModuleId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_ItemGroupRefId_ItemGroupRefUserId",
+                name: "ListHeaderIdx",
                 table: "ListHeader",
-                columns: new[] { "ItemGroupRefId", "ItemGroupRefUserId" });
+                columns: new[] { "Id", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_LinkListHeaderId_LinkListHeaderUserId",
+                name: "ModuleIdx1",
                 table: "ListHeader",
-                columns: new[] { "LinkListHeaderId", "LinkListHeaderUserId" });
+                columns: new[] { "ModuleId", "ModuleUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_ModuleId_ModuleUserId",
+                name: "ModuleRefIdx",
                 table: "ListHeader",
-                columns: new[] { "ModuleId", "ModuleUserId" });
+                columns: new[] { "ModuleRefId", "ModuleRefUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId", "ModuleId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_ModuleRefId_ModuleRefUserId",
+                name: "UserIdx3",
                 table: "ListHeader",
-                columns: new[] { "ModuleRefId", "ModuleRefUserId" });
+                column: "UserId")
+                .Annotation("SqlServer:Include", new[] { "Id", "ModuleId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListHeader_UserId",
-                table: "ListHeader",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListLine_ItemId_ItemUserId",
+                name: "ItemIdx3",
                 table: "ListLine",
-                columns: new[] { "ItemId", "ItemUserId" });
+                columns: new[] { "ItemId", "ItemUserId" })
+                .Annotation("SqlServer:Include", new[] { "LotId", "LineNum", "ListHeaderId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListLine_ListHeaderId_ListHeaderUserId",
+                name: "LineNumIdx1",
                 table: "ListLine",
-                columns: new[] { "ListHeaderId", "ListHeaderUserId" });
+                columns: new[] { "ListHeaderId", "LineNum", "ListHeaderUserId" },
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "LotId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListLine_UserId",
+                name: "ListHeaderIdx1",
                 table: "ListLine",
-                column: "UserId");
+                columns: new[] { "ListHeaderId", "ListHeaderUserId" })
+                .Annotation("SqlServer:Include", new[] { "LotId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Module_DimHeaderId_DimHeaderUserId",
+                name: "DimHeaderIdx3",
                 table: "Module",
-                columns: new[] { "DimHeaderId", "DimHeaderUserId" });
+                columns: new[] { "DimHeaderId", "DimHeaderUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Module_ItemGroupId_ItemGroupUserId",
+                name: "ItemGroupIdx2",
                 table: "Module",
-                columns: new[] { "ItemGroupId", "ItemGroupUserId" });
+                columns: new[] { "ItemGroupId", "ItemGroupUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Module_LinkModuleId_LinkModuleUserId",
+                name: "LinkModuleIdx",
                 table: "Module",
-                columns: new[] { "LinkModuleId", "LinkModuleUserId" });
+                columns: new[] { "LinkModuleId", "LinkModuleUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Module_ModuleRefId_ModuleRefUserId",
+                name: "ModuleIdx2",
                 table: "Module",
-                columns: new[] { "ModuleRefId", "ModuleRefUserId" });
+                columns: new[] { "Id", "UserId" },
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "Name" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Module_UserId",
+                name: "ModuleRefIdx1",
                 table: "Module",
-                column: "UserId");
+                columns: new[] { "ModuleRefId", "ModuleRefUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTransaction_ItemId_UserId",
+                name: "UserIdx4",
+                table: "Module",
+                column: "UserId")
+                .Annotation("SqlServer:Include", new[] { "Id", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "NickNameIdx",
+                table: "User",
+                column: "NickName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UserIdx5",
+                table: "User",
+                column: "Id",
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "NickName", "Name", "Surname", "Email" });
+
+            migrationBuilder.CreateIndex(
+                name: "ItemIdx4",
                 table: "UserTransaction",
-                columns: new[] { "ItemId", "UserId" });
+                columns: new[] { "ItemId", "TransLinkUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTransaction_ListId_UserId",
+                name: "ListIdx1",
                 table: "UserTransaction",
-                columns: new[] { "ListId", "UserId" });
+                columns: new[] { "ListId", "TransLinkUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTransaction_ModuleId_UserId",
+                name: "ModuleIdx3",
                 table: "UserTransaction",
-                columns: new[] { "ModuleId", "UserId" });
+                columns: new[] { "ModuleId", "TransLinkUserId" })
+                .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTransaction_UserId",
+                name: "TransIdx",
                 table: "UserTransaction",
-                column: "UserId");
+                columns: new[] { "Id", "UserId" },
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "TransType" });
+
+            migrationBuilder.CreateIndex(
+                name: "UserIdx6",
+                table: "UserTransaction",
+                column: "UserId")
+                .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DimensionCombination_DimensionHeader_DimHeaderId_DimHeaderUserId",
@@ -599,7 +686,7 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "DimHeaderId", "DimHeaderUserId" },
                 principalTable: "DimensionHeader",
                 principalColumns: new[] { "Id", "UserId" },
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DimensionCombination_Item_ItemId_ItemUserId",
@@ -607,7 +694,7 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "ItemId", "ItemUserId" },
                 principalTable: "Item",
                 principalColumns: new[] { "Id", "UserId" },
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DimensionLine_DimensionHeader_DimensionHeaderId_DimHeaderUserId",
@@ -615,21 +702,13 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "DimensionHeaderId", "DimHeaderUserId" },
                 principalTable: "DimensionHeader",
                 principalColumns: new[] { "Id", "UserId" },
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DimensionLine_Item_ItemId_ItemUserId",
                 table: "DimensionLine",
                 columns: new[] { "ItemId", "ItemUserId" },
                 principalTable: "Item",
-                principalColumns: new[] { "Id", "UserId" },
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ListHeader_DimensionHeader_DimensionHeaderId_DimensionHeaderUserId",
-                table: "ListHeader",
-                columns: new[] { "DimensionHeaderId", "DimensionHeaderUserId" },
-                principalTable: "DimensionHeader",
                 principalColumns: new[] { "Id", "UserId" },
                 onDelete: ReferentialAction.Restrict);
 
@@ -647,7 +726,7 @@ namespace UniversalSolutionApplication.Migrations
                 columns: new[] { "ModuleId", "ModuleUserId" },
                 principalTable: "Module",
                 principalColumns: new[] { "Id", "UserId" },
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ListHeader_Module_ModuleRefId_ModuleRefUserId",
@@ -660,10 +739,6 @@ namespace UniversalSolutionApplication.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ListHeader_DimensionHeader_DimensionHeaderId_DimensionHeaderUserId",
-                table: "ListHeader");
-
             migrationBuilder.DropForeignKey(
                 name: "FK_ListHeader_DimensionHeader_DimHeaderRefId_DimHeaderRefUserId",
                 table: "ListHeader");

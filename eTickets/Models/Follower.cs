@@ -12,9 +12,9 @@ namespace UniversalSolutionApplication.Models
         public string Id { set; get; }
 
         // Relation
+        public string UserRefId { get; set; }
+        public User UserRef { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
         public string FollowerRefId { get; set; }
         public User FollowerRef { get; set; }
     }

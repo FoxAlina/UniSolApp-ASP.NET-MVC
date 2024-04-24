@@ -23,8 +23,7 @@ namespace UniversalSolutionApplication.Models
         public List<Module> Modules { get; set; }
         public List<ItemGroup> LinkItemGroups { get; set; }
 
-        public List<ListHeader> ListHeaders { get; set; }
-        public List<ListHeader> LisHeaderRefs { get; set; }
+        public List<ListHeader> ListHeaderRefs { get; set; }
 
         public string? LinkItemGroupId { get; set; }
         public string? LinkItemGroupUserId { get; set; }
