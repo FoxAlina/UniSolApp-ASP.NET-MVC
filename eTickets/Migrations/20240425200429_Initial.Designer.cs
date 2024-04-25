@@ -10,7 +10,7 @@ using UniversalSolutionApplication.Data;
 namespace UniversalSolutionApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240424213214_Initial")]
+    [Migration("20240425200429_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
