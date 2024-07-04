@@ -11,11 +11,14 @@ namespace UniversalSolutionApplication.Models
 {
     public class Item
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { set; get; }
+
         [MaxLength(20)]
-        public string Id { get; set; }
+        public string SurrogateId { get; set; }
 
         public string? ProfilePictureURL { set; get; }
-        [MaxLength(30)]
+        [MaxLength(100)]
         public string Name { get; set; }
         public string? Description { get; set; }
         public DomainType DomainType { get; set; }
@@ -29,19 +32,19 @@ namespace UniversalSolutionApplication.Models
         public List<UserTransaction> Trans { get; set; }
         public List<Item> LinkItems { get; set; }
 
-        public string? LinkItemId { get; set; }
-        public string? LinkItemUserId { get; set; }
+        public Guid? LinkItemId { get; set; }
+        public Guid? LinkItemUserId { get; set; }
         public Item? LinkItem { get; set; }
 
-        public string ItemGroupId { get; set; }
-        public string ItemGroupUserId { get; set; }
+        public Guid ItemGroupId { get; set; }
+        public Guid ItemGroupUserId { get; set; }
         public ItemGroup ItemGroup { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
 
-        public string? ModuleId { get; set; }
-        public string? ModuleUserId { get; set; }
+        public Guid? ModuleId { get; set; }
+        public Guid? ModuleUserId { get; set; }
         public Module? Module { get; set; }
 
     }

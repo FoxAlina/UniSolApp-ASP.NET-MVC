@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,8 +9,11 @@ namespace UniversalSolutionApplication.Models
 {
     public class User
     {
-        [Key, MaxLength(20)]
-        public string Id { set; get; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { set; get; }
+
+        [MaxLength(20)]
+        public string SurrogateId { get; set; }
 
         public string? ProfilePictureURL { set; get; }
         [MaxLength(30)]
@@ -25,6 +29,7 @@ namespace UniversalSolutionApplication.Models
         //relations
         public List<ItemGroup> ItemGroups { get; set; }
         public List<DimensionHeader> DimensionHeaders { get; set; }
+        public List<DimensionGroup> DimensionGroups { get; set; }
         public List<ListHeader> ListHeaders { get; set; }
         public List<Module> Modules { get; set; }
         public List<Item> Items { get; set; }

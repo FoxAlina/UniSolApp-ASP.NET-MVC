@@ -11,8 +11,11 @@ namespace UniversalSolutionApplication.Models
     public class DimensionLine
     {
         public float LineNum { get; set; }
-        [MaxLength(30)]
-        public string LotId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid LotId { set; get; }
+
+        [MaxLength(20)]
+        public string SurrogateId { get; set; }
         public DimensionLineType Type { get; set; }
         public int? Integer { get; set; }
         public double? Double { get; set; }
@@ -24,12 +27,12 @@ namespace UniversalSolutionApplication.Models
 
         // Relationships
 
-        public string DimensionHeaderId { get; set; }
-        public string DimHeaderUserId { get; set; }
+        public Guid DimensionHeaderId { get; set; }
+        public Guid DimHeaderUserId { get; set; }
         public DimensionHeader DimensionHeader { get; set; }
 
-        public string? ItemId { get; set; }
-        public string? ItemUserId { get; set; }
+        public Guid? ItemId { get; set; }
+        public Guid? ItemUserId { get; set; }
         public Item? Item { get; set; }
     }
 }

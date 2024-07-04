@@ -10,8 +10,11 @@ namespace UniversalSolutionApplication.Models
 {
     public class DimensionHeader
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { set; get; }
+
         [MaxLength(20)]
-        public string Id { get; set; }
+        public string SurrogateId { get; set; }
 
         [MaxLength(30)]
         public string Name { get; set; }
@@ -26,16 +29,19 @@ namespace UniversalSolutionApplication.Models
         public List<DimensionHeader> LinkDimHeaders { get; set; }
         public List<ListHeader> ListHeaderRefs { get; set; }
 
+        public Guid? DimGroupId { get; set; }
+        public Guid? DimGroupUserId { get; set; }
+        public DimensionGroup? DimensionGroup { get; set; }
 
-        public string? LinkHeaderId { get; set; }
-        public string? LinkHeaderUserId { get; set; }
+        public Guid? LinkHeaderId { get; set; }
+        public Guid? LinkHeaderUserId { get; set; }
         public DimensionHeader? LinkHeader { get; set; }
 
-        public string? ListHeaderId { get; set; }
-        public string? ListHeaderUserId { get; set; }
+        public Guid? ListHeaderId { get; set; }
+        public Guid? ListHeaderUserId { get; set; }
         public ListHeader? ListHeader { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
     }
 }

@@ -10,18 +10,21 @@ namespace UniversalSolutionApplication.Models
     public class ListLine
     {
         public float LineNum { get; set; }
-        [MaxLength(30)]
-        public string LotId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid LotId { set; get; }
+
+        [MaxLength(20)]
+        public string SurrogateId { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
 
         // Relationships
-        public string ListHeaderId { get; set; }
-        public string ListHeaderUserId { get; set; }
+        public Guid ListHeaderId { get; set; }
+        public Guid ListHeaderUserId { get; set; }
         public ListHeader ListHeader { get; set; }
 
-        public string ItemId { get; set; }
-        public string ItemUserId { get; set; }
+        public Guid ItemId { get; set; }
+        public Guid ItemUserId { get; set; }
         public Item Item { get; set; }
     }
 }

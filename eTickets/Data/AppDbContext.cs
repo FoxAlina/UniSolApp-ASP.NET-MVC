@@ -22,6 +22,7 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<ListLine>().HasAlternateKey(ll => ll.LotId);
 
             modelBuilder = this.setForeignKeys(modelBuilder);
+            modelBuilder = this.setConstraints(modelBuilder);
             modelBuilder = this.setDeleteActions(modelBuilder);
             modelBuilder = this.setIndeces(modelBuilder);
 
@@ -42,6 +43,7 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<ListHeader>().HasKey(t => new { t.Id, t.UserId });
             modelBuilder.Entity<Follower>().HasKey(f => f.Id);
             modelBuilder.Entity<DimensionCombination>().HasKey(dc => new { dc.Id, dc.UserId });
+            modelBuilder.Entity<DimensionGroup>().HasKey(dc => new { dc.Id, dc.UserId });
 
             modelBuilder.Entity<DimensionLine>().HasKey(ll => new
             {
@@ -60,6 +62,49 @@ namespace UniversalSolutionApplication.Data
             return modelBuilder;
         }
 
+        private ModelBuilder setConstraints(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserTransaction>().HasCheckConstraint("ModuleToUserTransaction", "TransLinkName = \"Module\"");
+            modelBuilder.Entity<UserTransaction>().HasCheckConstraint("ListToUserTransaction", "TransLinkName = \"ListHeader\"");
+            modelBuilder.Entity<UserTransaction>().HasCheckConstraint("ItemToUserTransaction", "TransLinkName = \"Item\"");
+
+            modelBuilder.Entity<ListHeader>().HasCheckConstraint("ModuleToListHeader", "FilterRefName = \"Module\"");
+            modelBuilder.Entity<ListHeader>().HasCheckConstraint("ItemGroupToListHeader", "FilterRefName = \"ItemGroup\"");
+            modelBuilder.Entity<ListHeader>().HasCheckConstraint("DimensionHeaderToListHeader", "FilterRefName = \"DimensionHeader\"");
+
+            modelBuilder.Entity<Module>().HasCheckConstraint("ItemGroupToModule", "FilterLinkName = \"ItemGroup\"");
+            modelBuilder.Entity<Module>().HasCheckConstraint("DimensionHeaderToModule", "FilterLinkName = \"DimensionHeader\"");
+
+            modelBuilder.Entity<UserTransaction>().HasOne(m => m.Module).WithMany(i => i.Trans)
+                .HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId })
+                .HasConstraintName("ModuleToUserTransaction");
+            modelBuilder.Entity<UserTransaction>().HasOne(m => m.Item).WithMany(i => i.Trans)
+                .HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId })
+                .HasConstraintName("ItemToUserTransaction");
+            modelBuilder.Entity<UserTransaction>().HasOne(m => m.List).WithMany(i => i.Trans)
+                .HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId })
+                .HasConstraintName("ListToUserTransaction");
+
+            modelBuilder.Entity<ListHeader>().HasOne(i => i.ModuleRef).WithMany(dh => dh.ListHeaderRefs)
+                .HasForeignKey(i => new { i.FilterRefId, i.FilterRefUserId })
+                .HasConstraintName("ModuleToListHeader");
+            modelBuilder.Entity<ListHeader>().HasOne(i => i.ItemGroupRef).WithMany(dh => dh.ListHeaderRefs)
+                .HasForeignKey(i => new { i.FilterRefId, i.FilterRefUserId })
+                .HasConstraintName("ItemGroupToListHeader");
+            modelBuilder.Entity<ListHeader>().HasOne(i => i.DimHeaderRef).WithMany(dh => dh.ListHeaderRefs)
+                .HasForeignKey(i => new { i.FilterRefId, i.FilterRefUserId })
+                .HasConstraintName("DimensionHeaderToListHeader");
+
+            modelBuilder.Entity<Module>().HasOne(i => i.ItemGroup).WithMany(ig => ig.Modules)
+                .HasForeignKey(i => new { i.FilterLinkId, i.FilterLinkUserId })
+                .HasConstraintName("ItemGroupToModule");
+            modelBuilder.Entity<Module>().HasOne(i => i.DimHeader).WithMany(dh => dh.Modules)
+                .HasForeignKey(i => new { i.FilterLinkId, i.FilterLinkUserId })
+                .HasConstraintName("DimensionHeaderToModule");
+
+            return modelBuilder;
+        }
+
         private ModelBuilder setForeignKeys(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Follower>().HasOne(f => f.UserRef).WithMany(u => u.UserRefs).HasForeignKey(f => f.UserRefId);
@@ -73,19 +118,23 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<User>().HasMany(m => m.DimensionHeaders).WithOne(i => i.User).HasForeignKey(i => i.UserId);
             modelBuilder.Entity<User>().HasMany(m => m.ListHeaders).WithOne(i => i.User).HasForeignKey(i => i.UserId);
             modelBuilder.Entity<User>().HasMany(m => m.Modules).WithOne(i => i.User).HasForeignKey(i => i.UserId);
+            modelBuilder.Entity<User>().HasMany(m => m.DimensionGroups).WithOne(i => i.User).HasForeignKey(i => i.UserId);
 
             modelBuilder.Entity<Item>().HasOne(i => i.ItemGroup).WithMany(ig => ig.Items).HasForeignKey(i => new { i.ItemGroupId, i.ItemGroupUserId });
             modelBuilder.Entity<Item>().HasOne(m => m.Module).WithMany(i => i.Items).HasForeignKey(i => new { i.ModuleId, i.ModuleUserId });
             modelBuilder.Entity<Item>().HasOne(m => m.LinkItem).WithMany(i => i.LinkItems).HasForeignKey(i => new { i.LinkItemId, i.LinkItemUserId });
 
-            modelBuilder.Entity<Module>().HasOne(i => i.ItemGroup).WithMany(ig => ig.Modules).HasForeignKey(i => new { i.ItemGroupId, i.ItemGroupUserId });
-            modelBuilder.Entity<Module>().HasOne(i => i.DimHeader).WithMany(dh => dh.Modules).HasForeignKey(i => new { i.DimHeaderId, i.DimHeaderUserId });
+            modelBuilder.Entity<Module>().HasOne(i => i.ItemGroup).WithMany(ig => ig.Modules).HasForeignKey(i => new { i.FilterLinkId, i.FilterLinkUserId });
+            modelBuilder.Entity<Module>().HasOne(i => i.DimHeader).WithMany(dh => dh.Modules).HasForeignKey(i => new { i.FilterLinkId, i.FilterLinkUserId });
             modelBuilder.Entity<Module>().HasOne(i => i.LinkModule).WithMany(dh => dh.LinkModules).HasForeignKey(i => new { i.LinkModuleId, i.LinkModuleUserId });
             modelBuilder.Entity<Module>().HasOne(i => i.ModuleRef).WithMany(dh => dh.ModuleRefs).HasForeignKey(i => new { i.ModuleRefId, i.ModuleRefUserId });
 
             modelBuilder.Entity<ItemGroup>().HasOne(m => m.LinkItemGroup).WithMany(i => i.LinkItemGroups).HasForeignKey(i => new { i.LinkItemGroupId, i.LinkItemGroupUserId });
-            
+
+            modelBuilder.Entity<DimensionHeader>().HasOne(i => i.DimensionGroup).WithMany(dh => dh.DimHeaders).HasForeignKey(i => new { i.DimGroupId, i.DimGroupUserId});
+            modelBuilder.Entity<DimensionHeader>().HasOne(i => i.ListHeader).WithMany(dh => dh.DimHeaders).HasForeignKey(i => new { i.ListHeaderId, i.ListHeaderUserId });
             modelBuilder.Entity<DimensionHeader>().HasOne(i => i.LinkHeader).WithMany(dh => dh.LinkDimHeaders).HasForeignKey(i => new { i.LinkHeaderId, i.LinkHeaderUserId });
+            
             modelBuilder.Entity<DimensionLine>().HasOne(i => i.DimensionHeader).WithMany(dh => dh.Lines).HasForeignKey(i => new { i.DimensionHeaderId, i.DimHeaderUserId });
             modelBuilder.Entity<DimensionLine>().HasOne(i => i.Item).WithMany(dh => dh.DimLines).HasForeignKey(i => new { i.ItemId, i.ItemUserId });
             
@@ -94,16 +143,14 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<ListLine>().HasOne(i => i.ListHeader).WithMany(dh => dh.Lines).HasForeignKey(i => new { i.ListHeaderId, i.ListHeaderUserId });
             modelBuilder.Entity<ListLine>().HasOne(m => m.Item).WithMany(i => i.ListLines).HasForeignKey(i => new { i.ItemId, i.ItemUserId });
 
-            modelBuilder.Entity<ListHeader>().HasOne(i => i.ModuleRef).WithMany(dh => dh.ListHeaderRefs).HasForeignKey(i => new { i.ModuleRefId, i.ModuleRefUserId });
-            modelBuilder.Entity<ListHeader>().HasOne(i => i.ItemGroupRef).WithMany(dh => dh.ListHeaderRefs).HasForeignKey(i => new { i.ItemGroupRefId, i.ItemGroupRefUserId });
-            modelBuilder.Entity<ListHeader>().HasOne(i => i.DimHeaderRef).WithMany(dh => dh.ListHeaderRefs).HasForeignKey(i => new { i.DimHeaderRefId, i.DimHeaderRefUserId });
+            modelBuilder.Entity<ListHeader>().HasOne(i => i.ModuleRef).WithMany(dh => dh.ListHeaderRefs).HasForeignKey(i => new { i.FilterRefId, i.FilterRefUserId });
+            modelBuilder.Entity<ListHeader>().HasOne(i => i.ItemGroupRef).WithMany(dh => dh.ListHeaderRefs).HasForeignKey(i => new { i.FilterRefId, i.FilterRefUserId });
+            modelBuilder.Entity<ListHeader>().HasOne(i => i.DimHeaderRef).WithMany(dh => dh.ListHeaderRefs).HasForeignKey(i => new { i.FilterRefId, i.FilterRefUserId });
 
-            modelBuilder.Entity<DimensionHeader>().HasOne(i => i.ListHeader).WithMany(dh => dh.DimHeaders).HasForeignKey(i => new { i.ListHeaderId, i.ListHeaderUserId });
-
-            modelBuilder.Entity<UserTransaction>().HasOne(m => m.Module).WithMany(i => i.Trans).HasForeignKey(i => new { i.ModuleId, i.TransLinkUserId });
-            modelBuilder.Entity<UserTransaction>().HasOne(m => m.Item).WithMany(i => i.Trans).HasForeignKey(i => new { i.ItemId, i.TransLinkUserId });
-            modelBuilder.Entity<UserTransaction>().HasOne(m => m.List).WithMany(i => i.Trans).HasForeignKey(i => new { i.ListId, i.TransLinkUserId });
             modelBuilder.Entity<UserTransaction>().HasOne(m => m.User).WithMany(i => i.Trans).HasForeignKey(i => i.UserId);
+            modelBuilder.Entity<UserTransaction>().HasOne(m => m.Module).WithMany(i => i.Trans).HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId });
+            modelBuilder.Entity<UserTransaction>().HasOne(m => m.Item).WithMany(i => i.Trans).HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId });
+            modelBuilder.Entity<UserTransaction>().HasOne(m => m.List).WithMany(i => i.Trans).HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId });
 
             return modelBuilder;
         }
@@ -117,6 +164,8 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<DimensionHeader>().HasOne(dh => dh.ListHeader).WithMany(l => l.DimHeaders).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<DimensionHeader>().HasMany(dh => dh.Modules).WithOne(l => l.DimHeader).OnDelete(DeleteBehavior.Restrict);
             
+            modelBuilder.Entity<DimensionGroup>().HasMany(dh => dh.DimHeaders).WithOne(l => l.DimensionGroup).OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ListHeader>().HasMany(dc => dc.Lines).WithOne(dh => dh.ListHeader).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ListHeader>().HasOne(dc => dc.DimHeaderRef).WithMany(dh => dh.ListHeaderRefs).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ListHeader>().HasOne(dc => dc.Module).WithMany(dh => dh.ListHeaders).OnDelete(DeleteBehavior.Restrict);
@@ -138,6 +187,7 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<User>().HasMany(dc => dc.Items).WithOne(dh => dh.User).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>().HasMany(dc => dc.Followers).WithOne(dh => dh.FollowerRef).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<User>().HasMany(dc => dc.UserRefs).WithOne(dh => dh.UserRef).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>().HasMany(m => m.DimensionGroups).WithOne(i => i.User).OnDelete(DeleteBehavior.Cascade);
 
             return modelBuilder;
         }
@@ -149,8 +199,7 @@ namespace UniversalSolutionApplication.Data
 
             modelBuilder.Entity<Module>().HasIndex(i => new { i.Id, i.UserId }, "ModuleIdx").IsUnique().IncludeProperties(p => new { p.Name });
             modelBuilder.Entity<Module>().HasIndex(i => new { i.UserId }, "UserIdx").IncludeProperties(p => new { p.Id, p.Name });
-            modelBuilder.Entity<Module>().HasIndex(i => new { i.ItemGroupId, i.ItemGroupUserId }, "ItemGroupIdx").IncludeProperties(p => new { p.Id, p.UserId });
-            modelBuilder.Entity<Module>().HasIndex(i => new { i.DimHeaderId, i.DimHeaderUserId }, "DimHeaderIdx").IncludeProperties(p => new { p.Id, p.UserId });
+            modelBuilder.Entity<Module>().HasIndex(i => new { i.FilterLinkId, i.FilterLinkUserId, i.FilterLinkName }, "FilterLinkIdx").IncludeProperties(p => new { p.Id, p.UserId });
             modelBuilder.Entity<Module>().HasIndex(i => new { i.LinkModuleId, i.LinkModuleUserId }, "LinkModuleIdx").IncludeProperties(p => new { p.Id, p.UserId });
             modelBuilder.Entity<Module>().HasIndex(i => new { i.ModuleRefId, i.ModuleRefUserId }, "ModuleRefIdx").IncludeProperties(p => new { p.Id, p.UserId });
 
@@ -162,9 +211,7 @@ namespace UniversalSolutionApplication.Data
 
             modelBuilder.Entity<UserTransaction>().HasIndex(i => new { i.Id, i.UserId }, "TransIdx").IsUnique().IncludeProperties(p => new { p.TransType });
             modelBuilder.Entity<UserTransaction>().HasIndex(i => new { i.UserId }, "UserIdx").IncludeProperties(p => new { p.Id });
-            modelBuilder.Entity<UserTransaction>().HasIndex(i => new { i.ItemId, i.TransLinkUserId }, "ItemIdx").IncludeProperties(p => new { p.Id });
-            modelBuilder.Entity<UserTransaction>().HasIndex(i => new { i.ListId, i.TransLinkUserId }, "ListIdx").IncludeProperties(p => new { p.Id });
-            modelBuilder.Entity<UserTransaction>().HasIndex(i => new { i.ModuleId, i.TransLinkUserId }, "ModuleIdx").IncludeProperties(p => new { p.Id });
+            modelBuilder.Entity<UserTransaction>().HasIndex(i => new { i.TransLinkId, i.TransLinkUserId, i.TransLinkName }, "TransLinkIdx").IncludeProperties(p => new { p.Id });
 
             modelBuilder.Entity<ItemGroup>().HasIndex(i => new { i.Id, i.UserId }, "ItemGroupIdx").IsUnique();
             modelBuilder.Entity<ItemGroup>().HasIndex(i => new { i.UserId }, "UserIdx").IncludeProperties(i => new { i.Id });
@@ -186,9 +233,9 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.Id, i.UserId }, "ListHeaderIdx").IsUnique();
             modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.UserId }, "UserIdx").IncludeProperties(p => new { p.Id, p.ModuleId });
             modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.ModuleId, i.ModuleUserId }, "ModuleIdx").IncludeProperties(p => new { p.Id, p.UserId });
-            modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.ModuleRefId, i.ModuleRefUserId }, "ModuleRefIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
-            modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.ItemGroupRefId, i.ItemGroupRefUserId }, "ItemGroupRefIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
-            modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.DimHeaderRefId, i.DimHeaderRefUserId }, "DimHeaderRefIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
+            modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.FilterRefId, i.FilterRefUserId }, "ModuleRefIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
+            modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.FilterRefId, i.FilterRefUserId }, "ItemGroupRefIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
+            modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.FilterRefId, i.FilterRefUserId }, "DimHeaderRefIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
             modelBuilder.Entity<ListHeader>().HasIndex(i => new { i.LinkListHeaderId, i.LinkListHeaderUserId }, "LinkListHeaderIdx").IncludeProperties(p => new { p.Id, p.UserId, p.ModuleId });
 
             modelBuilder.Entity<ListLine>().HasIndex(i => new { i.ListHeaderId, i.LineNum, i.ListHeaderUserId }, "LineNumIdx").IsUnique().IncludeProperties(p => new { p.LotId });

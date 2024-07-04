@@ -10,8 +10,11 @@ namespace UniversalSolutionApplication.Models
 {
     public class Module
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { set; get; }
+
         [MaxLength(20)]
-        public string Id { set; get; }
+        public string SurrogateId { get; set; }
 
         public string? ProfilePictureURL { set; get; }
         [MaxLength(30)]
@@ -31,23 +34,22 @@ namespace UniversalSolutionApplication.Models
         public List<ListHeader> ListHeaders { get; set; }
         public List<ListHeader> ListHeaderRefs { get; set; }
 
-        public string? ModuleRefId { get; set; }
-        public string? ModuleRefUserId { get; set; }
+        public Guid? ModuleRefId { get; set; }
+        public Guid? ModuleRefUserId { get; set; }
         public Module? ModuleRef { get; set; }
 
-        public string? LinkModuleId { get; set; }
-        public string? LinkModuleUserId { get; set; }
+        public Guid? LinkModuleId { get; set; }
+        public Guid? LinkModuleUserId { get; set; }
         public Module? LinkModule { get; set; }
 
-        public string? ItemGroupId { get; set; }
-        public string? ItemGroupUserId { get; set; }
+        //Item group / dim header filter
+        public Guid? FilterLinkId { get; set; }
+        public Guid? FilterLinkUserId { get; set; }
+        public Guid? FilterLinkName { get; set; }
         public ItemGroup? ItemGroup { get; set; }
-
-        public string? DimHeaderId { get; set; }
-        public string? DimHeaderUserId { get; set; }
         public DimensionHeader? DimHeader { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
     }
 }

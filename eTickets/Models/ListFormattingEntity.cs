@@ -8,7 +8,7 @@ using UniversalSolutionApplication.Data.Enums;
 
 namespace UniversalSolutionApplication.Models
 {
-    public class DimensionCombination
+    public class ListFormattingEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { set; get; }
@@ -16,17 +16,15 @@ namespace UniversalSolutionApplication.Models
         [MaxLength(20)]
         public string SurrogateId { get; set; }
 
+        public ListBlock listBlockType;
+        public Scales scale;
+
         // Relationships
-
-        public Guid ItemId { get; set; }
-        public Guid ItemUserId { get; set; }
-        public Item Item { get; set; }
-
-        public Guid DimHeaderId { get; set; }
-        public Guid DimHeaderUserId { get; set; }
-        public DimensionHeader DimHeader{ get; set; }
-
-        public Guid UserId { get; set; }
-        public User User { get; set; }
+        public Guid? LinkId { get; set; }
+        public Guid? LinkUserId { get; set; }
+        public string? LinkName { get; set; }
+        public Module? ModuleLink { get; set; }
+        public ListHeader? LiastHeaderLink { get; set; }
+        public DimensionHeader? DimHeaderLink { get; set; }
     }
 }

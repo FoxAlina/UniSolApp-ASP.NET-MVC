@@ -10,24 +10,23 @@ namespace UniversalSolutionApplication.Models
 {
     public class UserTransaction
     {
-        [Key, MaxLength(20)]
-        public string Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { set; get; }
+
+        [MaxLength(20)]
+        public string SurrogateId { get; set; }
         public UserTransType TransType { get; set; }
         public ItemModuleListType RefType { get; set; }
 
         // Relationships
-        public string ItemId { get; set; }
-        public Item Item { get; set; }
+        public Guid TransLinkUserId { get; set; }
+        public Guid TransLinkId { get; set; }
+        public Guid TransLinkName { get; set; }
+        public Item? Item { get; set; }
+        public Module? Module { get; set; }
+        public ListHeader? List { get; set; }
 
-        public string ModuleId { get; set; }
-        public Module Module { get; set; }
-
-        public string ListId { get; set; }
-        public ListHeader List { get; set; }
-
-        public string TransLinkUserId { get; set; }
-
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
     }
 }
