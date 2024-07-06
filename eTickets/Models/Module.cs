@@ -34,6 +34,8 @@ namespace UniversalSolutionApplication.Models
         public List<ListHeader> ListHeaders { get; set; }
         public List<ListHeader> ListHeaderRefs { get; set; }
 
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+
         public Guid? ModuleRefId { get; set; }
         public Guid? ModuleRefUserId { get; set; }
         public Module? ModuleRef { get; set; }
@@ -42,7 +44,6 @@ namespace UniversalSolutionApplication.Models
         public Guid? LinkModuleUserId { get; set; }
         public Module? LinkModule { get; set; }
 
-        //Item group / dim header filter
         public Guid? FilterLinkId { get; set; }
         public Guid? FilterLinkUserId { get; set; }
         public Guid? FilterLinkName { get; set; }

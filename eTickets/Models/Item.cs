@@ -32,6 +32,8 @@ namespace UniversalSolutionApplication.Models
         public List<UserTransaction> Trans { get; set; }
         public List<Item> LinkItems { get; set; }
 
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+
         public Guid? LinkItemId { get; set; }
         public Guid? LinkItemUserId { get; set; }
         public Item? LinkItem { get; set; }

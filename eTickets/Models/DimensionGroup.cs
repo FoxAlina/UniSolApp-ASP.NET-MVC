@@ -9,7 +9,6 @@ namespace UniversalSolutionApplication.Models
 {
     public class DimensionGroup
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { set; get; }
 
@@ -22,11 +21,15 @@ namespace UniversalSolutionApplication.Models
         public string? Description { get; set; }
 
         // Relationships
-
         public List<DimensionHeader> DimHeaders { get; set; }
+
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+
+        //public Guid TextFormattingEntityId { get; set; }
+        //public Guid TextFormattingEntityUserId { get; set; }
+        //public TextFormattingEntity TextFormattingEntity { get; set; }
 
         public Guid UserId { get; set; }
         public User User { get; set; }
-
     }
 }

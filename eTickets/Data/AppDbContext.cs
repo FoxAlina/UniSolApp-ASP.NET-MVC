@@ -44,6 +44,9 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<Follower>().HasKey(f => f.Id);
             modelBuilder.Entity<DimensionCombination>().HasKey(dc => new { dc.Id, dc.UserId });
             modelBuilder.Entity<DimensionGroup>().HasKey(dc => new { dc.Id, dc.UserId });
+            modelBuilder.Entity<LinkedFormattingEntity>().HasKey(lf => new { lf.Id, lf.UserId });
+            modelBuilder.Entity<ListFormattingEntity>().HasKey(lf => new { lf.Id, lf.UserId });
+            modelBuilder.Entity<TextFormattingEntity>().HasKey(tf => new { tf.Id, tf.UserId });
 
             modelBuilder.Entity<DimensionLine>().HasKey(ll => new
             {
@@ -75,6 +78,17 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<Module>().HasCheckConstraint("ItemGroupToModule", "FilterLinkName = \"ItemGroup\"");
             modelBuilder.Entity<Module>().HasCheckConstraint("DimensionHeaderToModule", "FilterLinkName = \"DimensionHeader\"");
 
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("ListFormatting", "FormattingType = \"List\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("TextFormatting", "FormattingType = \"Text\"");
+
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingModule", "FilterLinkName = \"Module\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingListHeader", "FilterLinkName = \"ListHeader\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingDimensionHeader", "FilterLinkName = \"DimensionHeader\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingDimensionLine", "FilterLinkName = \"DimensionLine\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingItem", "FilterLinkName = \"Item\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingItemGroup", "FilterLinkName = \"ItemGroup\"");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasCheckConstraint("FormattingDimensionGroup", "FilterLinkName = \"DimensionGroup\"");
+
             modelBuilder.Entity<UserTransaction>().HasOne(m => m.Module).WithMany(i => i.Trans)
                 .HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId })
                 .HasConstraintName("ModuleToUserTransaction");
@@ -102,6 +116,35 @@ namespace UniversalSolutionApplication.Data
                 .HasForeignKey(i => new { i.FilterLinkId, i.FilterLinkUserId })
                 .HasConstraintName("DimensionHeaderToModule");
 
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.Module).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ModuleId, i.ModuleUserId })
+                .HasConstraintName("FormattingModule");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.ListHeader).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ListHeaderId, i.ListHeaderUserId })
+                .HasConstraintName("FormattingListHeader");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.DimensionHeader).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.DimensionHeaderId, i.DimensionHeaderUserId })
+                .HasConstraintName("FormattingDimensionHeader");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.DimensionLine).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.DimensionLineId, i.DimensionLineUserId })
+                .HasConstraintName("FormattingDimensionLine");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.Item).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ItemId, i.ItemUserId })
+                .HasConstraintName("FormattingItem");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.ItemGroup).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ItemGroupId, i.ItemGroupUserId })
+                .HasConstraintName("FormattingItemGroup");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.DimensionGroup).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.DimensionGroupId, i.DimensionGroupUserId })
+                .HasConstraintName("FormattingDimensionGroup");
+
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.TextFormattingEntity).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.TextFormattingEntityId, i.TextFormattingEntityUserId })
+                .HasConstraintName("TextFormatting");
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.ListFormattingEntity).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ListFormattingEntityId, i.ListFormattingEntityUserId })
+                .HasConstraintName("ListFormatting");
+
             return modelBuilder;
         }
 
@@ -119,6 +162,9 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<User>().HasMany(m => m.ListHeaders).WithOne(i => i.User).HasForeignKey(i => i.UserId);
             modelBuilder.Entity<User>().HasMany(m => m.Modules).WithOne(i => i.User).HasForeignKey(i => i.UserId);
             modelBuilder.Entity<User>().HasMany(m => m.DimensionGroups).WithOne(i => i.User).HasForeignKey(i => i.UserId);
+            modelBuilder.Entity<User>().HasMany(m => m.LinkedFormattingEntity).WithOne(i => i.User).HasForeignKey(i => i.UserId);
+            modelBuilder.Entity<User>().HasMany(m => m.ListFormattingEntity).WithOne(i => i.User).HasForeignKey(i => i.UserId);
+            modelBuilder.Entity<User>().HasMany(m => m.TextFormattingEntity).WithOne(i => i.User).HasForeignKey(i => i.UserId);
 
             modelBuilder.Entity<Item>().HasOne(i => i.ItemGroup).WithMany(ig => ig.Items).HasForeignKey(i => new { i.ItemGroupId, i.ItemGroupUserId });
             modelBuilder.Entity<Item>().HasOne(m => m.Module).WithMany(i => i.Items).HasForeignKey(i => new { i.ModuleId, i.ModuleUserId });
@@ -151,6 +197,30 @@ namespace UniversalSolutionApplication.Data
             modelBuilder.Entity<UserTransaction>().HasOne(m => m.Module).WithMany(i => i.Trans).HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId });
             modelBuilder.Entity<UserTransaction>().HasOne(m => m.Item).WithMany(i => i.Trans).HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId });
             modelBuilder.Entity<UserTransaction>().HasOne(m => m.List).WithMany(i => i.Trans).HasForeignKey(i => new { i.TransLinkId, i.TransLinkUserId });
+
+            //modelBuilder.Entity<ListFormattingEntity>().HasMany(l => l.Modules).WithOne(m => m.ListFormattingEntity).HasForeignKey(l => new { l.ListFormattingEntityId, l.ListFormattingEntityUserId });
+            //modelBuilder.Entity<ListFormattingEntity>().HasMany(l => l.ListHeaders).WithOne(m => m.ListFormattingEntity).HasForeignKey(l => new { l.ListFormattingEntityId, l.ListFormattingEntityUserId});
+            //modelBuilder.Entity<ListFormattingEntity>().HasMany(l => l.DimensionHeaders).WithOne(m => m.ListFormattingEntity).HasForeignKey(l => new { l.ListFormattingEntityId, l.ListFormattingEntityUserId});
+
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.Module).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ModuleId, i.ModuleUserId });
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.ListHeader).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ListHeaderId, i.ListHeaderUserId});
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.DimensionHeader).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.DimensionHeaderId, i.DimensionHeaderUserId});
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.DimensionLine).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasPrincipalKey(i => new { i.LotId, i.DimHeaderUserId});
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.Item).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ItemId, i.ItemUserId});
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.ItemGroup).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ItemGroupId, i.ItemGroupUserId });
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.DimensionGroup).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.DimensionGroupId, i.DimensionGroupUserId});
+
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.TextFormattingEntity).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.TextFormattingEntityId, i.TextFormattingEntityUserId});
+            modelBuilder.Entity<LinkedFormattingEntity>().HasOne(i => i.ListFormattingEntity).WithMany(dh => dh.LinkedFormattingEntities)
+                .HasForeignKey(i => new { i.ListFormattingEntityId, i.ListFormattingEntityUserId});
 
             return modelBuilder;
         }

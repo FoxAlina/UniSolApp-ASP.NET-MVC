@@ -29,6 +29,8 @@ namespace UniversalSolutionApplication.Models
         public List<DimensionHeader> LinkDimHeaders { get; set; }
         public List<ListHeader> ListHeaderRefs { get; set; }
 
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+
         public Guid? DimGroupId { get; set; }
         public Guid? DimGroupUserId { get; set; }
         public DimensionGroup? DimensionGroup { get; set; }

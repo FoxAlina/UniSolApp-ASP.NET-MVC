@@ -30,6 +30,8 @@ namespace UniversalSolutionApplication.Models
         public List<UserTransaction> Trans { get; set; }
         public List<ListHeader> LinkListHeaders { get; set; }
 
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+
         public Guid ModuleId { get; set; }
         public Guid ModuleUserId { get; set; }
         public Module Module { get; set; }
@@ -44,7 +46,6 @@ namespace UniversalSolutionApplication.Models
         public Guid? LinkListHeaderId { get; set; }
         public Guid? LinkListHeaderUserId { get; set; }
         public ListHeader? LinkListHeader { get; set; }
-
         public Guid UserId { get; set; }
         public User User { get; set; }
 

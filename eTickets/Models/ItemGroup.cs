@@ -26,8 +26,9 @@ namespace UniversalSolutionApplication.Models
         public List<Item> Items { get; set; }
         public List<Module> Modules { get; set; }
         public List<ItemGroup> LinkItemGroups { get; set; }
-
         public List<ListHeader> ListHeaderRefs { get; set; }
+
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 
         public Guid? LinkItemGroupId { get; set; }
         public Guid? LinkItemGroupUserId { get; set; }
@@ -35,6 +36,5 @@ namespace UniversalSolutionApplication.Models
 
         public Guid UserId { get; set; }
         public User User { get; set; }
-
     }
 }

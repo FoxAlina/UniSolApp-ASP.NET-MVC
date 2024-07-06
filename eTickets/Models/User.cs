@@ -36,5 +36,8 @@ namespace UniversalSolutionApplication.Models
         public List<Follower> Followers { get; set; }
         public List<Follower> UserRefs { get; set; }
         public List<UserTransaction> Trans { get; set; }
+        public List<LinkedFormattingEntity> LinkedFormattingEntity { get; set; }
+        public List<ListFormattingEntity> ListFormattingEntity { get; set; }
+        public List<TextFormattingEntity> TextFormattingEntity { get; set; }
     }
 }

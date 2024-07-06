@@ -26,6 +26,7 @@ namespace UniversalSolutionApplication.Models
         public DateTime? DateTime { get; set; }
 
         // Relationships
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 
         public Guid DimensionHeaderId { get; set; }
         public Guid DimHeaderUserId { get; set; }

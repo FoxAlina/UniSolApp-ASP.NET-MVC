@@ -20,11 +20,9 @@ namespace UniversalSolutionApplication.Models
         public Scales scale;
 
         // Relationships
-        public Guid? LinkId { get; set; }
-        public Guid? LinkUserId { get; set; }
-        public string? LinkName { get; set; }
-        public Module? ModuleLink { get; set; }
-        public ListHeader? LiastHeaderLink { get; set; }
-        public DimensionHeader? DimHeaderLink { get; set; }
+        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+
+        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }
