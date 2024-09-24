@@ -19,12 +19,23 @@ namespace UniversalSolutionApplication.Models
         public ItemModuleListType RefType { get; set; }
 
         // Relationships
-        public Guid TransLinkUserId { get; set; }
-        public Guid TransLinkId { get; set; }
-        public Guid TransLinkName { get; set; }
+        public Guid? TransLinkId { get; set; }
+        public Guid? TransLinkUserId { get; set; }
+        public Guid? TransLinkName { get; set; }
         public Item? Item { get; set; }
         public Module? Module { get; set; }
-        public ListHeader? List { get; set; }
+        public ListHeader? ListHeader { get; set; }
+        public ListLine? ListLine { get; set; }
+        public DimensionHeader? DimensionHeader { get; set; }
+        public DimensionLine? DimensionLine { get; set; }
+        public DimensionCombination? DimensionCombination { get; set; }
+        public DimensionGroup? DimensionGroup { get; set; }
+        public ItemGroup? ItemGroup { get; set; }
+        public TextFormattingEntity? TextFormattingEntity { get; set; }
+        public ListFormattingEntity? ListFormattingEntity { get; set; }
+        public LinkedFormattingEntity? LinkedFormattingEntity { get; set; }
+        public Network? Follower { get; set; }
+
 
         public Guid UserId { get; set; }
         public User User { get; set; }

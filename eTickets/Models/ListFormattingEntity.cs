@@ -19,6 +19,8 @@ namespace UniversalSolutionApplication.Models
         public ListBlock listBlockType;
         public Scales scale;
 
+        public DateTime CreatedDateTime { get; set; }
+
         // Relationships
         public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 

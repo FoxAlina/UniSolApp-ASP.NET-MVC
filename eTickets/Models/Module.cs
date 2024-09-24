@@ -15,20 +15,22 @@ namespace UniversalSolutionApplication.Models
 
         [MaxLength(20)]
         public string SurrogateId { get; set; }
-
         public string? ProfilePictureURL { set; get; }
+        [Display(Name = "Name")]
         [MaxLength(30)]
         public string Name { get; set; }
+        [Display(Name = "Description")]
         public string? Description { get; set; }
         public bool General { get; set; }
+        [Display(Name = "Status")]
         public ItemStatus ItemStatus { get; set; }
+        [Display(Name = "Privacy")]
         public DomainType DomainType { get; set; }
 
 
         // Relationships
         public List<Item> Items { get; set; }
         public List<UserTransaction> Trans { get; set; }
-        public List<Module> LinkModules { get; set; }
         public List<Module> ModuleRefs { get; set; }
 
         public List<ListHeader> ListHeaders { get; set; }
@@ -39,10 +41,6 @@ namespace UniversalSolutionApplication.Models
         public Guid? ModuleRefId { get; set; }
         public Guid? ModuleRefUserId { get; set; }
         public Module? ModuleRef { get; set; }
-
-        public Guid? LinkModuleId { get; set; }
-        public Guid? LinkModuleUserId { get; set; }
-        public Module? LinkModule { get; set; }
 
         public Guid? FilterLinkId { get; set; }
         public Guid? FilterLinkUserId { get; set; }

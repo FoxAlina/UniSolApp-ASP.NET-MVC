@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using UniversalSolutionApplication.Data.Enums;
 
 namespace UniversalSolutionApplication.Models
 {
@@ -19,15 +20,12 @@ namespace UniversalSolutionApplication.Models
         public string Name { get; set; }
         [MaxLength(250)]
         public string? Description { get; set; }
+        public DomainType DomainType { get; set; }
+        public DateTime CreatedDateTime { get; set; }
 
         // Relationships
         public List<DimensionHeader> DimHeaders { get; set; }
-
         public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
-
-        //public Guid TextFormattingEntityId { get; set; }
-        //public Guid TextFormattingEntityUserId { get; set; }
-        //public TextFormattingEntity TextFormattingEntity { get; set; }
 
         public Guid UserId { get; set; }
         public User User { get; set; }

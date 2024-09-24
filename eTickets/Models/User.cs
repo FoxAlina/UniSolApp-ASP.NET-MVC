@@ -21,9 +21,9 @@ namespace UniversalSolutionApplication.Models
         [MaxLength(30)]
         public string Surname { get; set; }
         [MaxLength(20)]
-        public string NickName { get; set; }
+        public string? NickName { get; set; }
         public DateTime CreatedDateTime { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public string Password { get; set; }
 
         //relations
@@ -33,8 +33,8 @@ namespace UniversalSolutionApplication.Models
         public List<ListHeader> ListHeaders { get; set; }
         public List<Module> Modules { get; set; }
         public List<Item> Items { get; set; }
-        public List<Follower> Followers { get; set; }
-        public List<Follower> UserRefs { get; set; }
+        public List<Network> Followers { get; set; }
+        public List<Network> UserRefs { get; set; }
         public List<UserTransaction> Trans { get; set; }
         public List<LinkedFormattingEntity> LinkedFormattingEntity { get; set; }
         public List<ListFormattingEntity> ListFormattingEntity { get; set; }

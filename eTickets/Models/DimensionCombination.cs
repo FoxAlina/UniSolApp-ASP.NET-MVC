@@ -17,6 +17,7 @@ namespace UniversalSolutionApplication.Models
         public string SurrogateId { get; set; }
 
         // Relationships
+        public List<DimensionLine> Lines { get; set; }
 
         public Guid ItemId { get; set; }
         public Guid ItemUserId { get; set; }

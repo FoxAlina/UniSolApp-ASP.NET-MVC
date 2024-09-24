@@ -28,9 +28,9 @@ namespace UniversalSolutionApplication.Models
         // Relationships
         public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 
-        public Guid DimensionHeaderId { get; set; }
-        public Guid DimHeaderUserId { get; set; }
-        public DimensionHeader DimensionHeader { get; set; }
+        public Guid DimensionCombinationId { get; set; }
+        public Guid DimCombinationUserId { get; set; }
+        public DimensionCombination DimensionCombination { get; set; }
 
         public Guid? ItemId { get; set; }
         public Guid? ItemUserId { get; set; }

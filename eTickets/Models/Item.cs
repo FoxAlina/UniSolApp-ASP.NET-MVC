@@ -18,11 +18,16 @@ namespace UniversalSolutionApplication.Models
         public string SurrogateId { get; set; }
 
         public string? ProfilePictureURL { set; get; }
+        [Display (Name = "Name")]
         [MaxLength(100)]
         public string Name { get; set; }
+        [Display(Name = "Description")]
         public string? Description { get; set; }
+        [Display(Name = "Privacy")]
         public DomainType DomainType { get; set; }
+        [Display(Name = "Status")]
         public ItemStatus ItemStatus { get; set; }
+        [Display(Name = "Created date")]
         public DateTime CreatedDateTime { get; set; }
 
         // Relationships
@@ -30,17 +35,12 @@ namespace UniversalSolutionApplication.Models
         public List<DimensionLine> DimLines { get; set; }
         public List<ListLine> ListLines { get; set; }
         public List<UserTransaction> Trans { get; set; }
-        public List<Item> LinkItems { get; set; }
 
         public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 
-        public Guid? LinkItemId { get; set; }
-        public Guid? LinkItemUserId { get; set; }
-        public Item? LinkItem { get; set; }
-
-        public Guid ItemGroupId { get; set; }
-        public Guid ItemGroupUserId { get; set; }
-        public ItemGroup ItemGroup { get; set; }
+        public Guid? ItemGroupId { get; set; }
+        public Guid? ItemGroupUserId { get; set; }
+        public ItemGroup? ItemGroup { get; set; }
 
         public Guid UserId { get; set; }
         public User User { get; set; }

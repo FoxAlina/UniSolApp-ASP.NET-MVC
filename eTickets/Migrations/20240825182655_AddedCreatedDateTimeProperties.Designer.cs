@@ -10,8 +10,8 @@ using UniversalSolutionApplication.Data;
 namespace UniversalSolutionApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240706152532_Initial")]
-    partial class Initial
+    [Migration("20240825182655_AddedCreatedDateTimeProperties")]
+    partial class AddedCreatedDateTimeProperties
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,7 +60,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasIndex(new[] { "ItemId", "ItemUserId" }, "ItemIdx")
                         .HasAnnotation("SqlServer:Include", new[] { "Id" });
 
-                    b.ToTable("DimensionCombination");
+                    b.ToTable("DimensionCombinations");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.DimensionGroup", b =>
@@ -71,6 +71,9 @@ namespace UniversalSolutionApplication.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(250)
@@ -90,7 +93,7 @@ namespace UniversalSolutionApplication.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DimensionGroup");
+                    b.ToTable("DimensionGroups");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.DimensionHeader", b =>
@@ -101,6 +104,9 @@ namespace UniversalSolutionApplication.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("DimGroupId")
                         .HasColumnType("uniqueidentifier");
@@ -158,7 +164,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasIndex(new[] { "UserId" }, "UserIdx")
                         .HasAnnotation("SqlServer:Include", new[] { "Id" });
 
-                    b.ToTable("DimensionHeader");
+                    b.ToTable("DimensionHeaders");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.DimensionLine", b =>
@@ -229,38 +235,7 @@ namespace UniversalSolutionApplication.Migrations
                         .IsUnique()
                         .HasAnnotation("SqlServer:Include", new[] { "LotId" });
 
-                    b.ToTable("DimensionLine");
-                });
-
-            modelBuilder.Entity("UniversalSolutionApplication.Models.Follower", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FollowerRefId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SurrogateId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<Guid>("UserRefId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Id" }, "FollowerIdx")
-                        .IsUnique();
-
-                    b.HasIndex(new[] { "FollowerRefId" }, "FollowerRefIdx")
-                        .HasAnnotation("SqlServer:Include", new[] { "Id" });
-
-                    b.HasIndex(new[] { "UserRefId" }, "UserRefIdx")
-                        .HasAnnotation("SqlServer:Include", new[] { "Id" });
-
-                    b.ToTable("Follower");
+                    b.ToTable("DimensionLines");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.Item", b =>
@@ -281,10 +256,10 @@ namespace UniversalSolutionApplication.Migrations
                     b.Property<int>("DomainType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ItemGroupId")
+                    b.Property<Guid?>("ItemGroupId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ItemGroupUserId")
+                    b.Property<Guid?>("ItemGroupUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ItemStatus")
@@ -339,7 +314,7 @@ namespace UniversalSolutionApplication.Migrations
                         .HasDatabaseName("UserIdx1")
                         .HasAnnotation("SqlServer:Include", new[] { "Id", "ItemGroupId", "ModuleId", "Name" });
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.ItemGroup", b =>
@@ -392,7 +367,7 @@ namespace UniversalSolutionApplication.Migrations
                         .HasDatabaseName("UserIdx2")
                         .HasAnnotation("SqlServer:Include", new[] { "Id" });
 
-                    b.ToTable("ItemGroup");
+                    b.ToTable("ItemGroups");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.LinkedFormattingEntity", b =>
@@ -404,22 +379,10 @@ namespace UniversalSolutionApplication.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("DimensionGroupId")
+                    b.Property<Guid?>("DimensionLineDimHeaderUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("DimensionGroupUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DimensionHeaderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DimensionHeaderUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DimensionLineId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DimensionLineUserId")
+                    b.Property<Guid?>("DimensionLineLotId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilterLinkName")
@@ -429,83 +392,24 @@ namespace UniversalSolutionApplication.Migrations
                     b.Property<int>("FormattingType")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ItemGroupId")
+                    b.Property<Guid?>("TransLinkId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ItemGroupUserId")
+                    b.Property<Guid?>("TransLinkName")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ItemUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ListFormattingEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ListFormattingEntityUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ListHeaderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ListHeaderUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ModuleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ModuleUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TextFormattingEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TextFormattingEntityUserId")
+                    b.Property<Guid?>("TransLinkUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("DimensionGroupId", "DimensionGroupUserId");
+                    b.HasIndex("DimensionLineLotId", "DimensionLineDimHeaderUserId");
 
-                    b.HasIndex("DimensionHeaderId", "DimensionHeaderUserId");
+                    b.HasIndex("TransLinkId", "TransLinkUserId");
 
-                    b.HasIndex("DimensionLineId", "DimensionLineUserId");
-
-                    b.HasIndex("ItemGroupId", "ItemGroupUserId");
-
-                    b.HasIndex("ItemId", "ItemUserId");
-
-                    b.HasIndex("ListFormattingEntityId", "ListFormattingEntityUserId");
-
-                    b.HasIndex("ListHeaderId", "ListHeaderUserId");
-
-                    b.HasIndex("ModuleId", "ModuleUserId");
-
-                    b.HasIndex("TextFormattingEntityId", "TextFormattingEntityUserId");
-
-                    b.ToTable("LinkedFormattingEntity");
-
-                    b.HasCheckConstraint("ListFormatting", "FormattingType = \"List\"");
-
-                    b.HasCheckConstraint("TextFormatting", "FormattingType = \"Text\"");
-
-                    b.HasCheckConstraint("FormattingModule", "FilterLinkName = \"Module\"");
-
-                    b.HasCheckConstraint("FormattingListHeader", "FilterLinkName = \"ListHeader\"");
-
-                    b.HasCheckConstraint("FormattingDimensionHeader", "FilterLinkName = \"DimensionHeader\"");
-
-                    b.HasCheckConstraint("FormattingDimensionLine", "FilterLinkName = \"DimensionLine\"");
-
-                    b.HasCheckConstraint("FormattingItem", "FilterLinkName = \"Item\"");
-
-                    b.HasCheckConstraint("FormattingItemGroup", "FilterLinkName = \"ItemGroup\"");
-
-                    b.HasCheckConstraint("FormattingDimensionGroup", "FilterLinkName = \"DimensionGroup\"");
+                    b.ToTable("LinkedFormattingEntities");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.ListFormattingEntity", b =>
@@ -517,6 +421,9 @@ namespace UniversalSolutionApplication.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SurrogateId")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -526,7 +433,7 @@ namespace UniversalSolutionApplication.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ListFormattingEntity");
+                    b.ToTable("ListFormattingEntities");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.ListHeader", b =>
@@ -609,13 +516,7 @@ namespace UniversalSolutionApplication.Migrations
                         .HasDatabaseName("UserIdx3")
                         .HasAnnotation("SqlServer:Include", new[] { "Id", "ModuleId" });
 
-                    b.ToTable("ListHeader");
-
-                    b.HasCheckConstraint("ModuleToListHeader", "FilterRefName = \"Module\"");
-
-                    b.HasCheckConstraint("ItemGroupToListHeader", "FilterRefName = \"ItemGroup\"");
-
-                    b.HasCheckConstraint("DimensionHeaderToListHeader", "FilterRefName = \"DimensionHeader\"");
+                    b.ToTable("ListHeaders");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.ListLine", b =>
@@ -665,7 +566,7 @@ namespace UniversalSolutionApplication.Migrations
                         .HasDatabaseName("ListHeaderIdx1")
                         .HasAnnotation("SqlServer:Include", new[] { "LotId" });
 
-                    b.ToTable("ListLine");
+                    b.ToTable("ListLines");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.Module", b =>
@@ -744,11 +645,41 @@ namespace UniversalSolutionApplication.Migrations
                         .HasDatabaseName("UserIdx4")
                         .HasAnnotation("SqlServer:Include", new[] { "Id", "Name" });
 
-                    b.ToTable("Module");
+                    b.ToTable("Modules");
+                });
 
-                    b.HasCheckConstraint("ItemGroupToModule", "FilterLinkName = \"ItemGroup\"");
+            modelBuilder.Entity("UniversalSolutionApplication.Models.Network", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasCheckConstraint("DimensionHeaderToModule", "FilterLinkName = \"DimensionHeader\"");
+                    b.Property<Guid>("FollowerRefId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SurrogateId")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<Guid>("UserRefId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("accessType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Id" }, "FollowerIdx")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "FollowerRefId" }, "FollowerRefIdx")
+                        .HasAnnotation("SqlServer:Include", new[] { "Id" });
+
+                    b.HasIndex(new[] { "UserRefId" }, "UserRefIdx")
+                        .HasAnnotation("SqlServer:Include", new[] { "Id" });
+
+                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.TextFormattingEntity", b =>
@@ -769,7 +700,7 @@ namespace UniversalSolutionApplication.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TextFormattingEntity");
+                    b.ToTable("TextFormattingEntities");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.User", b =>
@@ -782,7 +713,6 @@ namespace UniversalSolutionApplication.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -791,7 +721,6 @@ namespace UniversalSolutionApplication.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("NickName")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -815,20 +744,78 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "NickName" }, "NickNameIdx")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[NickName] IS NOT NULL");
 
                     b.HasIndex(new[] { "Id" }, "UserIdx")
                         .IsUnique()
                         .HasDatabaseName("UserIdx5")
                         .HasAnnotation("SqlServer:Include", new[] { "NickName", "Name", "Surname", "Email" });
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.UserTransaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionCombinationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionCombinationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionGroupUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionHeaderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionHeaderUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionLineDimHeaderUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DimensionLineDimensionHeaderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float?>("DimensionLineLineNum")
+                        .HasColumnType("real(20)");
+
+                    b.Property<Guid?>("FollowerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ItemGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ItemGroupUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("LinkedFormattingEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("LinkedFormattingEntityUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ListFormattingEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ListFormattingEntityUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float?>("ListLineLineNum")
+                        .HasColumnType("real(20)");
+
+                    b.Property<Guid?>("ListLineListHeaderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ListLineListHeaderUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RefType")
@@ -839,13 +826,19 @@ namespace UniversalSolutionApplication.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<Guid>("TransLinkId")
+                    b.Property<Guid?>("TextFormattingEntityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TransLinkName")
+                    b.Property<Guid?>("TextFormattingEntityUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TransLinkUserId")
+                    b.Property<Guid?>("TransLinkId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TransLinkName")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TransLinkUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransType")
@@ -855,6 +848,26 @@ namespace UniversalSolutionApplication.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("DimensionCombinationId", "DimensionCombinationUserId");
+
+                    b.HasIndex("DimensionGroupId", "DimensionGroupUserId");
+
+                    b.HasIndex("DimensionHeaderId", "DimensionHeaderUserId");
+
+                    b.HasIndex("ItemGroupId", "ItemGroupUserId");
+
+                    b.HasIndex("LinkedFormattingEntityId", "LinkedFormattingEntityUserId");
+
+                    b.HasIndex("ListFormattingEntityId", "ListFormattingEntityUserId");
+
+                    b.HasIndex("TextFormattingEntityId", "TextFormattingEntityUserId");
+
+                    b.HasIndex("DimensionLineDimensionHeaderId", "DimensionLineLineNum", "DimensionLineDimHeaderUserId");
+
+                    b.HasIndex("ListLineListHeaderId", "ListLineLineNum", "ListLineListHeaderUserId");
 
                     b.HasIndex(new[] { "Id", "UserId" }, "TransIdx")
                         .IsUnique()
@@ -867,13 +880,7 @@ namespace UniversalSolutionApplication.Migrations
                         .HasDatabaseName("UserIdx6")
                         .HasAnnotation("SqlServer:Include", new[] { "Id" });
 
-                    b.ToTable("UserTransaction");
-
-                    b.HasCheckConstraint("ModuleToUserTransaction", "TransLinkName = \"Module\"");
-
-                    b.HasCheckConstraint("ListToUserTransaction", "TransLinkName = \"ListHeader\"");
-
-                    b.HasCheckConstraint("ItemToUserTransaction", "TransLinkName = \"Item\"");
+                    b.ToTable("UserTransactions");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.DimensionCombination", b =>
@@ -887,13 +894,13 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "DimHeader")
                         .WithMany("DimCombs")
                         .HasForeignKey("DimHeaderId", "DimHeaderUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("UniversalSolutionApplication.Models.Item", "Item")
                         .WithMany("DimCombs")
                         .HasForeignKey("ItemId", "ItemUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("DimHeader");
@@ -925,7 +932,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.DimensionGroup", "DimensionGroup")
                         .WithMany("DimHeaders")
                         .HasForeignKey("DimGroupId", "DimGroupUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "LinkHeader")
                         .WithMany("LinkDimHeaders")
@@ -934,7 +941,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.ListHeader", "ListHeader")
                         .WithMany("DimHeaders")
                         .HasForeignKey("ListHeaderId", "ListHeaderUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("DimensionGroup");
 
@@ -950,36 +957,17 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "DimensionHeader")
                         .WithMany("Lines")
                         .HasForeignKey("DimensionHeaderId", "DimHeaderUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("UniversalSolutionApplication.Models.Item", "Item")
                         .WithMany("DimLines")
                         .HasForeignKey("ItemId", "ItemUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("DimensionHeader");
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("UniversalSolutionApplication.Models.Follower", b =>
-                {
-                    b.HasOne("UniversalSolutionApplication.Models.User", "FollowerRef")
-                        .WithMany("Followers")
-                        .HasForeignKey("FollowerRefId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("UniversalSolutionApplication.Models.User", "UserRef")
-                        .WithMany("UserRefs")
-                        .HasForeignKey("UserRefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FollowerRef");
-
-                    b.Navigation("UserRef");
                 });
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.Item", b =>
@@ -993,8 +981,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.ItemGroup", "ItemGroup")
                         .WithMany("Items")
                         .HasForeignKey("ItemGroupId", "ItemGroupUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.Item", "LinkItem")
                         .WithMany("LinkItems")
@@ -1003,7 +990,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.Module", "Module")
                         .WithMany("Items")
                         .HasForeignKey("ModuleId", "ModuleUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("ItemGroup");
 
@@ -1039,51 +1026,42 @@ namespace UniversalSolutionApplication.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UniversalSolutionApplication.Models.DimensionLine", "DimensionLine")
+                        .WithMany("LinkedFormattingEntities")
+                        .HasForeignKey("DimensionLineLotId", "DimensionLineDimHeaderUserId")
+                        .HasPrincipalKey("LotId", "DimHeaderUserId");
+
                     b.HasOne("UniversalSolutionApplication.Models.DimensionGroup", "DimensionGroup")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("DimensionGroupId", "DimensionGroupUserId")
-                        .HasConstraintName("FormattingDimensionGroup");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "DimensionHeader")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("DimensionHeaderId", "DimensionHeaderUserId")
-                        .HasConstraintName("FormattingDimensionHeader");
-
-                    b.HasOne("UniversalSolutionApplication.Models.DimensionLine", "DimensionLine")
-                        .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("DimensionLineId", "DimensionLineUserId")
-                        .HasConstraintName("FormattingDimensionLine")
-                        .HasPrincipalKey("LotId", "DimHeaderUserId");
-
-                    b.HasOne("UniversalSolutionApplication.Models.ItemGroup", "ItemGroup")
-                        .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("ItemGroupId", "ItemGroupUserId")
-                        .HasConstraintName("FormattingItemGroup");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.HasOne("UniversalSolutionApplication.Models.Item", "Item")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("ItemId", "ItemUserId")
-                        .HasConstraintName("FormattingItem");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.ItemGroup", "ItemGroup")
+                        .WithMany("LinkedFormattingEntities")
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.HasOne("UniversalSolutionApplication.Models.ListFormattingEntity", "ListFormattingEntity")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("ListFormattingEntityId", "ListFormattingEntityUserId")
-                        .HasConstraintName("ListFormatting");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.HasOne("UniversalSolutionApplication.Models.ListHeader", "ListHeader")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("ListHeaderId", "ListHeaderUserId")
-                        .HasConstraintName("FormattingListHeader");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.HasOne("UniversalSolutionApplication.Models.Module", "Module")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("ModuleId", "ModuleUserId")
-                        .HasConstraintName("FormattingModule");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.HasOne("UniversalSolutionApplication.Models.TextFormattingEntity", "TextFormattingEntity")
                         .WithMany("LinkedFormattingEntities")
-                        .HasForeignKey("TextFormattingEntityId", "TextFormattingEntityUserId")
-                        .HasConstraintName("TextFormatting");
+                        .HasForeignKey("TransLinkId", "TransLinkUserId");
 
                     b.Navigation("DimensionGroup");
 
@@ -1128,20 +1106,17 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "DimHeaderRef")
                         .WithMany("ListHeaderRefs")
                         .HasForeignKey("FilterRefId", "FilterRefUserId")
-                        .HasConstraintName("DimensionHeaderToListHeader")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.ItemGroup", "ItemGroupRef")
                         .WithMany("ListHeaderRefs")
                         .HasForeignKey("FilterRefId", "FilterRefUserId")
-                        .HasConstraintName("ItemGroupToListHeader")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.Module", "ModuleRef")
                         .WithMany("ListHeaderRefs")
                         .HasForeignKey("FilterRefId", "FilterRefUserId")
-                        .HasConstraintName("ModuleToListHeader")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.ListHeader", "LinkListHeader")
                         .WithMany("LinkListHeaders")
@@ -1150,7 +1125,7 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.Module", "Module")
                         .WithMany("ListHeaders")
                         .HasForeignKey("ModuleId", "ModuleUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("DimHeaderRef");
@@ -1171,13 +1146,13 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.Item", "Item")
                         .WithMany("ListLines")
                         .HasForeignKey("ItemId", "ItemUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("UniversalSolutionApplication.Models.ListHeader", "ListHeader")
                         .WithMany("Lines")
                         .HasForeignKey("ListHeaderId", "ListHeaderUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Item");
@@ -1196,14 +1171,12 @@ namespace UniversalSolutionApplication.Migrations
                     b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "DimHeader")
                         .WithMany("Modules")
                         .HasForeignKey("FilterLinkId", "FilterLinkUserId")
-                        .HasConstraintName("DimensionHeaderToModule")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.ItemGroup", "ItemGroup")
                         .WithMany("Modules")
                         .HasForeignKey("FilterLinkId", "FilterLinkUserId")
-                        .HasConstraintName("ItemGroupToModule")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.Module", "LinkModule")
                         .WithMany("LinkModules")
@@ -1224,6 +1197,25 @@ namespace UniversalSolutionApplication.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UniversalSolutionApplication.Models.Network", b =>
+                {
+                    b.HasOne("UniversalSolutionApplication.Models.User", "FollowerRef")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowerRefId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("UniversalSolutionApplication.Models.User", "UserRef")
+                        .WithMany("UserRefs")
+                        .HasForeignKey("UserRefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FollowerRef");
+
+                    b.Navigation("UserRef");
+                });
+
             modelBuilder.Entity("UniversalSolutionApplication.Models.TextFormattingEntity", b =>
                 {
                     b.HasOne("UniversalSolutionApplication.Models.User", "User")
@@ -1237,38 +1229,92 @@ namespace UniversalSolutionApplication.Migrations
 
             modelBuilder.Entity("UniversalSolutionApplication.Models.UserTransaction", b =>
                 {
+                    b.HasOne("UniversalSolutionApplication.Models.Network", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId");
+
                     b.HasOne("UniversalSolutionApplication.Models.User", "User")
                         .WithMany("Trans")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UniversalSolutionApplication.Models.DimensionCombination", "DimensionCombination")
+                        .WithMany()
+                        .HasForeignKey("DimensionCombinationId", "DimensionCombinationUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.DimensionGroup", "DimensionGroup")
+                        .WithMany()
+                        .HasForeignKey("DimensionGroupId", "DimensionGroupUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.DimensionHeader", "DimensionHeader")
+                        .WithMany()
+                        .HasForeignKey("DimensionHeaderId", "DimensionHeaderUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.ItemGroup", "ItemGroup")
+                        .WithMany()
+                        .HasForeignKey("ItemGroupId", "ItemGroupUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.LinkedFormattingEntity", "LinkedFormattingEntity")
+                        .WithMany()
+                        .HasForeignKey("LinkedFormattingEntityId", "LinkedFormattingEntityUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.ListFormattingEntity", "ListFormattingEntity")
+                        .WithMany()
+                        .HasForeignKey("ListFormattingEntityId", "ListFormattingEntityUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.TextFormattingEntity", "TextFormattingEntity")
+                        .WithMany()
+                        .HasForeignKey("TextFormattingEntityId", "TextFormattingEntityUserId");
+
                     b.HasOne("UniversalSolutionApplication.Models.Item", "Item")
                         .WithMany("Trans")
                         .HasForeignKey("TransLinkId", "TransLinkUserId")
-                        .HasConstraintName("ItemToUserTransaction")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("UniversalSolutionApplication.Models.ListHeader", "List")
+                    b.HasOne("UniversalSolutionApplication.Models.ListHeader", "ListHeader")
                         .WithMany("Trans")
                         .HasForeignKey("TransLinkId", "TransLinkUserId")
-                        .HasConstraintName("ListToUserTransaction")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UniversalSolutionApplication.Models.Module", "Module")
                         .WithMany("Trans")
                         .HasForeignKey("TransLinkId", "TransLinkUserId")
-                        .HasConstraintName("ModuleToUserTransaction")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("UniversalSolutionApplication.Models.DimensionLine", "DimensionLine")
+                        .WithMany()
+                        .HasForeignKey("DimensionLineDimensionHeaderId", "DimensionLineLineNum", "DimensionLineDimHeaderUserId");
+
+                    b.HasOne("UniversalSolutionApplication.Models.ListLine", "ListLine")
+                        .WithMany()
+                        .HasForeignKey("ListLineListHeaderId", "ListLineLineNum", "ListLineListHeaderUserId");
+
+                    b.Navigation("DimensionCombination");
+
+                    b.Navigation("DimensionGroup");
+
+                    b.Navigation("DimensionHeader");
+
+                    b.Navigation("DimensionLine");
+
+                    b.Navigation("Follower");
 
                     b.Navigation("Item");
 
-                    b.Navigation("List");
+                    b.Navigation("ItemGroup");
+
+                    b.Navigation("LinkedFormattingEntity");
+
+                    b.Navigation("ListFormattingEntity");
+
+                    b.Navigation("ListHeader");
+
+                    b.Navigation("ListLine");
 
                     b.Navigation("Module");
+
+                    b.Navigation("TextFormattingEntity");
 
                     b.Navigation("User");
                 });

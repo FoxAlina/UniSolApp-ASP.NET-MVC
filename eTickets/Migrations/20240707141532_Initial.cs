@@ -63,8 +63,7 @@ namespace UniversalSolutionApplication.Migrations
                         name: "FK_Follower_User_FollowerRefId",
                         column: x => x.FollowerRefId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Follower_User_UserRefId",
                         column: x => x.UserRefId,
@@ -143,6 +142,81 @@ namespace UniversalSolutionApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserTransaction",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SurrogateId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    TransType = table.Column<int>(type: "int", nullable: false),
+                    RefType = table.Column<int>(type: "int", nullable: false),
+                    TransLinkId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TransLinkUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TransLinkName = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ListLineListHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ListLineLineNum = table.Column<float>(type: "real", nullable: true),
+                    ListLineListHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionLineDimensionHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionLineLineNum = table.Column<float>(type: "real", nullable: true),
+                    DimensionLineDimHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionCombinationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionCombinationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionGroupUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ItemGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ItemGroupUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TextFormattingEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TextFormattingEntityUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ListFormattingEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ListFormattingEntityUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LinkedFormattingEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LinkedFormattingEntityUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    FollowerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTransaction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_DimensionGroup_DimensionGroupId_DimensionGroupUserId",
+                        columns: x => new { x.DimensionGroupId, x.DimensionGroupUserId },
+                        principalTable: "DimensionGroup",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_Follower_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "Follower",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_ItemGroup_ItemGroupId_ItemGroupUserId",
+                        columns: x => new { x.ItemGroupId, x.ItemGroupUserId },
+                        principalTable: "ItemGroup",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_ListFormattingEntity_ListFormattingEntityId_ListFormattingEntityUserId",
+                        columns: x => new { x.ListFormattingEntityId, x.ListFormattingEntityUserId },
+                        principalTable: "ListFormattingEntity",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_TextFormattingEntity_TextFormattingEntityId_TextFormattingEntityUserId",
+                        columns: x => new { x.TextFormattingEntityId, x.TextFormattingEntityUserId },
+                        principalTable: "TextFormattingEntity",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTransaction_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DimensionHeader",
                 columns: table => new
                 {
@@ -167,8 +241,7 @@ namespace UniversalSolutionApplication.Migrations
                         name: "FK_DimensionHeader_DimensionGroup_DimGroupId_DimGroupUserId",
                         columns: x => new { x.DimGroupId, x.DimGroupUserId },
                         principalTable: "DimensionGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_DimensionHeader_DimensionHeader_LinkHeaderId_LinkHeaderUserId",
                         columns: x => new { x.LinkHeaderId, x.LinkHeaderUserId },
@@ -207,14 +280,16 @@ namespace UniversalSolutionApplication.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Module", x => new { x.Id, x.UserId });
-                    table.CheckConstraint("ItemGroupToModule", "FilterLinkName = \"ItemGroup\"");
-                    table.CheckConstraint("DimensionHeaderToModule", "FilterLinkName = \"DimensionHeader\"");
                     table.ForeignKey(
-                        name: "DimensionHeaderToModule",
+                        name: "FK_Module_DimensionHeader_FilterLinkId_FilterLinkUserId",
                         columns: x => new { x.FilterLinkId, x.FilterLinkUserId },
                         principalTable: "DimensionHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
+                    table.ForeignKey(
+                        name: "FK_Module_ItemGroup_FilterLinkId_FilterLinkUserId",
+                        columns: x => new { x.FilterLinkId, x.FilterLinkUserId },
+                        principalTable: "ItemGroup",
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_Module_Module_LinkModuleId_LinkModuleUserId",
                         columns: x => new { x.LinkModuleId, x.LinkModuleUserId },
@@ -233,12 +308,6 @@ namespace UniversalSolutionApplication.Migrations
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "ItemGroupToModule",
-                        columns: x => new { x.FilterLinkId, x.FilterLinkUserId },
-                        principalTable: "ItemGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -274,14 +343,12 @@ namespace UniversalSolutionApplication.Migrations
                         name: "FK_Item_ItemGroup_ItemGroupId_ItemGroupUserId",
                         columns: x => new { x.ItemGroupId, x.ItemGroupUserId },
                         principalTable: "ItemGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_Item_Module_ModuleId_ModuleUserId",
                         columns: x => new { x.ModuleId, x.ModuleUserId },
                         principalTable: "Module",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_Item_User_UserId",
                         column: x => x.UserId,
@@ -314,15 +381,16 @@ namespace UniversalSolutionApplication.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ListHeader", x => new { x.Id, x.UserId });
-                    table.CheckConstraint("ModuleToListHeader", "FilterRefName = \"Module\"");
-                    table.CheckConstraint("ItemGroupToListHeader", "FilterRefName = \"ItemGroup\"");
-                    table.CheckConstraint("DimensionHeaderToListHeader", "FilterRefName = \"DimensionHeader\"");
                     table.ForeignKey(
-                        name: "DimensionHeaderToListHeader",
+                        name: "FK_ListHeader_DimensionHeader_FilterRefId_FilterRefUserId",
                         columns: x => new { x.FilterRefId, x.FilterRefUserId },
                         principalTable: "DimensionHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
+                    table.ForeignKey(
+                        name: "FK_ListHeader_ItemGroup_FilterRefId_FilterRefUserId",
+                        columns: x => new { x.FilterRefId, x.FilterRefUserId },
+                        principalTable: "ItemGroup",
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_ListHeader_ListHeader_LinkListHeaderId_LinkListHeaderUserId",
                         columns: x => new { x.LinkListHeaderId, x.LinkListHeaderUserId },
@@ -330,29 +398,21 @@ namespace UniversalSolutionApplication.Migrations
                         principalColumns: new[] { "Id", "UserId" },
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_ListHeader_Module_FilterRefId_FilterRefUserId",
+                        columns: x => new { x.FilterRefId, x.FilterRefUserId },
+                        principalTable: "Module",
+                        principalColumns: new[] { "Id", "UserId" });
+                    table.ForeignKey(
                         name: "FK_ListHeader_Module_ModuleId_ModuleUserId",
                         columns: x => new { x.ModuleId, x.ModuleUserId },
                         principalTable: "Module",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_ListHeader_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "ItemGroupToListHeader",
-                        columns: x => new { x.FilterRefId, x.FilterRefUserId },
-                        principalTable: "ItemGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "ModuleToListHeader",
-                        columns: x => new { x.FilterRefId, x.FilterRefUserId },
-                        principalTable: "Module",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -374,14 +434,12 @@ namespace UniversalSolutionApplication.Migrations
                         name: "FK_DimensionCombination_DimensionHeader_DimHeaderId_DimHeaderUserId",
                         columns: x => new { x.DimHeaderId, x.DimHeaderUserId },
                         principalTable: "DimensionHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_DimensionCombination_Item_ItemId_ItemUserId",
                         columns: x => new { x.ItemId, x.ItemUserId },
                         principalTable: "Item",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_DimensionCombination_User_UserId",
                         column: x => x.UserId,
@@ -394,14 +452,14 @@ namespace UniversalSolutionApplication.Migrations
                 name: "DimensionLine",
                 columns: table => new
                 {
-                    LineNum = table.Column<float>(type: "real(20)", precision: 20, scale: 2, nullable: false),
+                    LineNum = table.Column<float>(type: "real", precision: 20, scale: 2, nullable: false),
                     DimensionHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DimHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LotId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SurrogateId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Integer = table.Column<int>(type: "int", nullable: true),
-                    Double = table.Column<double>(type: "float(15)", precision: 15, scale: 2, nullable: true),
+                    Double = table.Column<double>(type: "float", precision: 15, scale: 2, nullable: true),
                     Bool = table.Column<bool>(type: "bit", nullable: true),
                     String = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true),
@@ -419,21 +477,19 @@ namespace UniversalSolutionApplication.Migrations
                         name: "FK_DimensionLine_DimensionHeader_DimensionHeaderId_DimHeaderUserId",
                         columns: x => new { x.DimensionHeaderId, x.DimHeaderUserId },
                         principalTable: "DimensionHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_DimensionLine_Item_ItemId_ItemUserId",
                         columns: x => new { x.ItemId, x.ItemUserId },
                         principalTable: "Item",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                 });
 
             migrationBuilder.CreateTable(
                 name: "ListLine",
                 columns: table => new
                 {
-                    LineNum = table.Column<float>(type: "real(20)", precision: 20, scale: 2, nullable: false),
+                    LineNum = table.Column<float>(type: "real", precision: 20, scale: 2, nullable: false),
                     ListHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ListHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LotId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -450,59 +506,12 @@ namespace UniversalSolutionApplication.Migrations
                         name: "FK_ListLine_Item_ItemId_ItemUserId",
                         columns: x => new { x.ItemId, x.ItemUserId },
                         principalTable: "Item",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "UserId" });
                     table.ForeignKey(
                         name: "FK_ListLine_ListHeader_ListHeaderId_ListHeaderUserId",
                         columns: x => new { x.ListHeaderId, x.ListHeaderUserId },
                         principalTable: "ListHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserTransaction",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SurrogateId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    TransType = table.Column<int>(type: "int", nullable: false),
-                    RefType = table.Column<int>(type: "int", nullable: false),
-                    TransLinkUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TransLinkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TransLinkName = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTransaction", x => x.Id);
-                    table.CheckConstraint("ModuleToUserTransaction", "TransLinkName = \"Module\"");
-                    table.CheckConstraint("ListToUserTransaction", "TransLinkName = \"ListHeader\"");
-                    table.CheckConstraint("ItemToUserTransaction", "TransLinkName = \"Item\"");
-                    table.ForeignKey(
-                        name: "FK_UserTransaction_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "ItemToUserTransaction",
-                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
-                        principalTable: "Item",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "ListToUserTransaction",
-                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
-                        principalTable: "ListHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "ModuleToUserTransaction",
-                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
-                        principalTable: "Module",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "Id", "UserId" });
                 });
 
             migrationBuilder.CreateTable(
@@ -513,97 +522,75 @@ namespace UniversalSolutionApplication.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FormattingType = table.Column<int>(type: "int", nullable: false),
                     FilterLinkName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModuleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModuleUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ListHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ListHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DimensionHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DimensionHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DimensionLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DimensionLineUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ItemUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ItemGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ItemGroupUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DimensionGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DimensionGroupUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TextFormattingEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TextFormattingEntityUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ListFormattingEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ListFormattingEntityUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    TransLinkId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TransLinkUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TransLinkName = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionLineLotId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DimensionLineDimHeaderUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LinkedFormattingEntity", x => new { x.Id, x.UserId });
-                    table.CheckConstraint("ListFormatting", "FormattingType = \"List\"");
-                    table.CheckConstraint("TextFormatting", "FormattingType = \"Text\"");
-                    table.CheckConstraint("FormattingModule", "FilterLinkName = \"Module\"");
-                    table.CheckConstraint("FormattingListHeader", "FilterLinkName = \"ListHeader\"");
-                    table.CheckConstraint("FormattingDimensionHeader", "FilterLinkName = \"DimensionHeader\"");
-                    table.CheckConstraint("FormattingDimensionLine", "FilterLinkName = \"DimensionLine\"");
-                    table.CheckConstraint("FormattingItem", "FilterLinkName = \"Item\"");
-                    table.CheckConstraint("FormattingItemGroup", "FilterLinkName = \"ItemGroup\"");
-                    table.CheckConstraint("FormattingDimensionGroup", "FilterLinkName = \"DimensionGroup\"");
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_DimensionGroup_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "DimensionGroup",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_DimensionHeader_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "DimensionHeader",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_DimensionLine_DimensionLineLotId_DimensionLineDimHeaderUserId",
+                        columns: x => new { x.DimensionLineLotId, x.DimensionLineDimHeaderUserId },
+                        principalTable: "DimensionLine",
+                        principalColumns: new[] { "LotId", "DimHeaderUserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_Item_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "Item",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_ItemGroup_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "ItemGroup",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_ListFormattingEntity_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "ListFormattingEntity",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_ListHeader_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "ListHeader",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_Module_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "Module",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkedFormattingEntity_TextFormattingEntity_TransLinkId_TransLinkUserId",
+                        columns: x => new { x.TransLinkId, x.TransLinkUserId },
+                        principalTable: "TextFormattingEntity",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_LinkedFormattingEntity_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FormattingDimensionGroup",
-                        columns: x => new { x.DimensionGroupId, x.DimensionGroupUserId },
-                        principalTable: "DimensionGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FormattingDimensionHeader",
-                        columns: x => new { x.DimensionHeaderId, x.DimensionHeaderUserId },
-                        principalTable: "DimensionHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FormattingDimensionLine",
-                        columns: x => new { x.DimensionLineId, x.DimensionLineUserId },
-                        principalTable: "DimensionLine",
-                        principalColumns: new[] { "LotId", "DimHeaderUserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FormattingItem",
-                        columns: x => new { x.ItemId, x.ItemUserId },
-                        principalTable: "Item",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FormattingItemGroup",
-                        columns: x => new { x.ItemGroupId, x.ItemGroupUserId },
-                        principalTable: "ItemGroup",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FormattingListHeader",
-                        columns: x => new { x.ListHeaderId, x.ListHeaderUserId },
-                        principalTable: "ListHeader",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FormattingModule",
-                        columns: x => new { x.ModuleId, x.ModuleUserId },
-                        principalTable: "Module",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "ListFormatting",
-                        columns: x => new { x.ListFormattingEntityId, x.ListFormattingEntityUserId },
-                        principalTable: "ListFormattingEntity",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "TextFormatting",
-                        columns: x => new { x.TextFormattingEntityId, x.TextFormattingEntityUserId },
-                        principalTable: "TextFormattingEntity",
-                        principalColumns: new[] { "Id", "UserId" },
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -770,49 +757,14 @@ namespace UniversalSolutionApplication.Migrations
                 .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_DimensionGroupId_DimensionGroupUserId",
+                name: "IX_LinkedFormattingEntity_DimensionLineLotId_DimensionLineDimHeaderUserId",
                 table: "LinkedFormattingEntity",
-                columns: new[] { "DimensionGroupId", "DimensionGroupUserId" });
+                columns: new[] { "DimensionLineLotId", "DimensionLineDimHeaderUserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_DimensionHeaderId_DimensionHeaderUserId",
+                name: "IX_LinkedFormattingEntity_TransLinkId_TransLinkUserId",
                 table: "LinkedFormattingEntity",
-                columns: new[] { "DimensionHeaderId", "DimensionHeaderUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_DimensionLineId_DimensionLineUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "DimensionLineId", "DimensionLineUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_ItemGroupId_ItemGroupUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "ItemGroupId", "ItemGroupUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_ItemId_ItemUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "ItemId", "ItemUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_ListFormattingEntityId_ListFormattingEntityUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "ListFormattingEntityId", "ListFormattingEntityUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_ListHeaderId_ListHeaderUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "ListHeaderId", "ListHeaderUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_ModuleId_ModuleUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "ModuleId", "ModuleUserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LinkedFormattingEntity_TextFormattingEntityId_TextFormattingEntityUserId",
-                table: "LinkedFormattingEntity",
-                columns: new[] { "TextFormattingEntityId", "TextFormattingEntityUserId" });
+                columns: new[] { "TransLinkId", "TransLinkUserId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkedFormattingEntity_UserId",
@@ -935,6 +887,56 @@ namespace UniversalSolutionApplication.Migrations
                 .Annotation("SqlServer:Include", new[] { "NickName", "Name", "Surname", "Email" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_DimensionCombinationId_DimensionCombinationUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionCombinationId", "DimensionCombinationUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_DimensionGroupId_DimensionGroupUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionGroupId", "DimensionGroupUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_DimensionHeaderId_DimensionHeaderUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionHeaderId", "DimensionHeaderUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_DimensionLineDimensionHeaderId_DimensionLineLineNum_DimensionLineDimHeaderUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionLineDimensionHeaderId", "DimensionLineLineNum", "DimensionLineDimHeaderUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_FollowerId",
+                table: "UserTransaction",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_ItemGroupId_ItemGroupUserId",
+                table: "UserTransaction",
+                columns: new[] { "ItemGroupId", "ItemGroupUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_LinkedFormattingEntityId_LinkedFormattingEntityUserId",
+                table: "UserTransaction",
+                columns: new[] { "LinkedFormattingEntityId", "LinkedFormattingEntityUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_ListFormattingEntityId_ListFormattingEntityUserId",
+                table: "UserTransaction",
+                columns: new[] { "ListFormattingEntityId", "ListFormattingEntityUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_ListLineListHeaderId_ListLineLineNum_ListLineListHeaderUserId",
+                table: "UserTransaction",
+                columns: new[] { "ListLineListHeaderId", "ListLineLineNum", "ListLineListHeaderUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTransaction_TextFormattingEntityId_TextFormattingEntityUserId",
+                table: "UserTransaction",
+                columns: new[] { "TextFormattingEntityId", "TextFormattingEntityUserId" });
+
+            migrationBuilder.CreateIndex(
                 name: "TransIdx",
                 table: "UserTransaction",
                 columns: new[] { "Id", "UserId" },
@@ -954,23 +956,86 @@ namespace UniversalSolutionApplication.Migrations
                 .Annotation("SqlServer:Include", new[] { "Id" });
 
             migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_DimensionCombination_DimensionCombinationId_DimensionCombinationUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionCombinationId", "DimensionCombinationUserId" },
+                principalTable: "DimensionCombination",
+                principalColumns: new[] { "Id", "UserId" },
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_DimensionHeader_DimensionHeaderId_DimensionHeaderUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionHeaderId", "DimensionHeaderUserId" },
+                principalTable: "DimensionHeader",
+                principalColumns: new[] { "Id", "UserId" },
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_DimensionLine_DimensionLineDimensionHeaderId_DimensionLineLineNum_DimensionLineDimHeaderUserId",
+                table: "UserTransaction",
+                columns: new[] { "DimensionLineDimensionHeaderId", "DimensionLineLineNum", "DimensionLineDimHeaderUserId" },
+                principalTable: "DimensionLine",
+                principalColumns: new[] { "DimensionHeaderId", "LineNum", "DimHeaderUserId" },
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_Item_TransLinkId_TransLinkUserId",
+                table: "UserTransaction",
+                columns: new[] { "TransLinkId", "TransLinkUserId" },
+                principalTable: "Item",
+                principalColumns: new[] { "Id", "UserId" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_LinkedFormattingEntity_LinkedFormattingEntityId_LinkedFormattingEntityUserId",
+                table: "UserTransaction",
+                columns: new[] { "LinkedFormattingEntityId", "LinkedFormattingEntityUserId" },
+                principalTable: "LinkedFormattingEntity",
+                principalColumns: new[] { "Id", "UserId" },
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_ListHeader_TransLinkId_TransLinkUserId",
+                table: "UserTransaction",
+                columns: new[] { "TransLinkId", "TransLinkUserId" },
+                principalTable: "ListHeader",
+                principalColumns: new[] { "Id", "UserId" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_ListLine_ListLineListHeaderId_ListLineLineNum_ListLineListHeaderUserId",
+                table: "UserTransaction",
+                columns: new[] { "ListLineListHeaderId", "ListLineLineNum", "ListLineListHeaderUserId" },
+                principalTable: "ListLine",
+                principalColumns: new[] { "ListHeaderId", "LineNum", "ListHeaderUserId" },
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UserTransaction_Module_TransLinkId_TransLinkUserId",
+                table: "UserTransaction",
+                columns: new[] { "TransLinkId", "TransLinkUserId" },
+                principalTable: "Module",
+                principalColumns: new[] { "Id", "UserId" });
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_DimensionHeader_ListHeader_ListHeaderId_ListHeaderUserId",
                 table: "DimensionHeader",
                 columns: new[] { "ListHeaderId", "ListHeaderUserId" },
                 principalTable: "ListHeader",
-                principalColumns: new[] { "Id", "UserId" },
-                onDelete: ReferentialAction.Restrict);
+                principalColumns: new[] { "Id", "UserId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "DimensionHeaderToListHeader",
+                name: "FK_ListHeader_DimensionHeader_FilterRefId_FilterRefUserId",
                 table: "ListHeader");
 
             migrationBuilder.DropForeignKey(
-                name: "DimensionHeaderToModule",
+                name: "FK_Module_DimensionHeader_FilterLinkId_FilterLinkUserId",
                 table: "Module");
+
+            migrationBuilder.DropTable(
+                name: "UserTransaction");
 
             migrationBuilder.DropTable(
                 name: "DimensionCombination");
@@ -983,9 +1048,6 @@ namespace UniversalSolutionApplication.Migrations
 
             migrationBuilder.DropTable(
                 name: "ListLine");
-
-            migrationBuilder.DropTable(
-                name: "UserTransaction");
 
             migrationBuilder.DropTable(
                 name: "DimensionLine");

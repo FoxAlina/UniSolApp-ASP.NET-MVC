@@ -57,6 +57,9 @@ namespace UniversalSolutionApplication
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //Seed database
+            AppDbInitializer.Seed(app);
         }
     }
 }

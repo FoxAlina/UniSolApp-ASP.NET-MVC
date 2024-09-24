@@ -21,23 +21,17 @@ namespace UniversalSolutionApplication.Models
         public TableDetailsListType TableType { get; set; }
         public DimensionLineType PropertyType { get; set; }
         public DomainType DomainType { get; set; }
+        public DateTime CreatedDateTime { get; set; }
 
         // Relationships
-        public List<DimensionLine> Lines { get; set; }
         public List<DimensionCombination> DimCombs { get; set; }
         public List<Module> Modules { get; set; }
-        public List<DimensionHeader> LinkDimHeaders { get; set; }
         public List<ListHeader> ListHeaderRefs { get; set; }
-
         public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 
         public Guid? DimGroupId { get; set; }
         public Guid? DimGroupUserId { get; set; }
         public DimensionGroup? DimensionGroup { get; set; }
-
-        public Guid? LinkHeaderId { get; set; }
-        public Guid? LinkHeaderUserId { get; set; }
-        public DimensionHeader? LinkHeader { get; set; }
 
         public Guid? ListHeaderId { get; set; }
         public Guid? ListHeaderUserId { get; set; }

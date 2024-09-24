@@ -28,7 +28,6 @@ namespace UniversalSolutionApplication.Models
         public List<ListLine> Lines { get; set; }
         public List<DimensionHeader> DimHeaders { get; set; }
         public List<UserTransaction> Trans { get; set; }
-        public List<ListHeader> LinkListHeaders { get; set; }
 
         public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
 
@@ -43,9 +42,6 @@ namespace UniversalSolutionApplication.Models
         public ItemGroup? ItemGroupRef { get; set; }
         public DimensionHeader? DimHeaderRef { get; set; }
 
-        public Guid? LinkListHeaderId { get; set; }
-        public Guid? LinkListHeaderUserId { get; set; }
-        public ListHeader? LinkListHeader { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
 
