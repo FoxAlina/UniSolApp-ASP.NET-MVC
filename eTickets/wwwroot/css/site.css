@@ -24,10 +24,17 @@ a {
   border-color: #1861ac;
 }
 
+/* Sidebar styles
+-------------------------------------------------- */
+.sidebar {
+    z-index: 1070 !important;
+    transform: translateX(0%) !important;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {
@@ -60,7 +67,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 240px;
 }
 .footer {
   position: absolute;
