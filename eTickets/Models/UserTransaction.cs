@@ -17,6 +17,7 @@ namespace UniversalSolutionApplication.Models
         public string SurrogateId { get; set; }
         public UserTransType TransType { get; set; }
         public ItemModuleListType RefType { get; set; }
+        public DateTime CreatedDateTime { get; set; }
 
         // Relationships
         public Guid? TransLinkId { get; set; }

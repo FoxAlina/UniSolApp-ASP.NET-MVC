@@ -21,7 +21,7 @@ namespace UniversalSolutionApplication.Controllers
         {
             var data = await context.ListHeaders.ToListAsync();
 
-            return View();
+            return View(data);
         }
     }
 }

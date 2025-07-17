@@ -31,7 +31,8 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "User-001",
                             Name = "User",
                             Surname = "One",
-                            Password = "One"
+                            Password = "One",
+                            CreatedDateTime = DateTime.Today
                         },
                         new User()
                         {
@@ -39,7 +40,8 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "User-002",
                             Name = "User",
                             Surname = "Two",
-                            Password = "Two"
+                            Password = "Two",
+                            CreatedDateTime = DateTime.Today
                         },
                         new User()
                         {
@@ -47,7 +49,8 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "User-003",
                             Name = "User",
                             Surname = "Three",
-                            Password = "Three"
+                            Password = "Three",
+                            CreatedDateTime = DateTime.Today
                         }
                     });
                 }
@@ -62,6 +65,7 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "Item-001",
                             Name = "Item 1",
                             Description = "Item number one.",
+                            CreatedDateTime = DateTime.Today,
                             UserId = userId,
                             ModuleId = moduleId,
                             ModuleUserId = userId
@@ -72,6 +76,7 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "Item-002",
                             Name = "Item 2",
                             Description = "Item number two.",
+                            CreatedDateTime = DateTime.Today,
                             UserId = userId,
                             ModuleId = moduleId,
                             ModuleUserId = userId
@@ -82,6 +87,7 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "Item-003",
                             Name = "Item 3",
                             Description = "Item number three.",
+                            CreatedDateTime = DateTime.Today,
                             UserId = userId,
                             ModuleId = moduleId,
                             ModuleUserId = userId
@@ -99,6 +105,7 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "Module-001",
                             Name = "Module 1",
                             Description = "Module number one.",
+                            CreatedDateTime = DateTime.Today,
                             UserId = userId
                         },
                         new Module()
@@ -107,6 +114,7 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "Module-002",
                             Name = "Module 2",
                             Description = "Module number two.",
+                            CreatedDateTime = DateTime.Today,
                             UserId = userId
                         },
                         new Module()
@@ -115,6 +123,7 @@ namespace UniversalSolutionApplication.Data
                             SurrogateId = "Module-003",
                             Name = "Module 3",
                             Description = "Module number three.",
+                            CreatedDateTime = DateTime.Today,
                             UserId = userId
                         }
                     });

@@ -26,6 +26,8 @@ namespace UniversalSolutionApplication.Models
         public ItemStatus ItemStatus { get; set; }
         [Display(Name = "Privacy")]
         public DomainType DomainType { get; set; }
+        [Display(Name = "Created date")]
+        public DateTime CreatedDateTime { get; set; }
 
 
         // Relationships
