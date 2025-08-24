@@ -16,28 +16,28 @@ namespace UniversalSolutionApplication.Data.Services
             context = _context;
         }
 
-        public void Add(Module _module)
+        public async Task AddAsync(Module _module)
         {
-            context.Modules.Add(_module);
-            context.SaveChanges();
+            await context.Modules.AddAsync(_module);
+            await context.SaveChangesAsync();
         }
 
-        public void Delete(string _id)
+        public void Delete(Guid _id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Module>> GetAll()
+        public async Task<IEnumerable<Module>> GetAllAsync()
         {
             return await context.Modules.ToListAsync();
         }
 
-        public Module GetById(string _id)
+        public async Task<Module> GetByIdAsync(Guid _id)
         {
-            throw new NotImplementedException();
+            return await context.Modules.FirstOrDefaultAsync(n => n.Id == _id);
         }
 
-        public Module Update(string _id, Module _newModule)
+        public Module Update(Guid _id, Module _newModule)
         {
             throw new NotImplementedException();
         }

@@ -21,7 +21,7 @@ namespace UniversalSolutionApplication.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var data = await service.GetAll();
+            var data = await service.GetAllAsync();
 
             return View(data);
         }
@@ -40,9 +40,18 @@ namespace UniversalSolutionApplication.Controllers
                 return View(_module);
             }
 
-            service.Add(_module);
+            await service.AddAsync(_module);
             return RedirectToAction(nameof(Index));
         }
 
+        //Get: Module/Details/Module1
+        public async Task<IActionResult> Details(Guid _id)
+        {
+            var module = await service.GetByIdAsync(_id);
+
+            if (module == null) return View("Empty");
+
+            return View(module);
+        }
     }
 }
