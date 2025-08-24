@@ -18,7 +18,8 @@ namespace UniversalSolutionApplication.Data.Services
 
         public void Add(Module _module)
         {
-            throw new NotImplementedException();
+            context.Modules.Add(_module);
+            context.SaveChanges();
         }
 
         public void Delete(string _id)

@@ -17,7 +17,8 @@ namespace UniversalSolutionApplication.Models
         public string SurrogateId { get; set; }
         public string? ProfilePictureURL { set; get; }
         [Display(Name = "Name")]
-        [MaxLength(30)]
+        [MaxLength(30, ErrorMessage = "Maximum length is 30 simbols.")]
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         [Display(Name = "Description")]
         public string? Description { get; set; }

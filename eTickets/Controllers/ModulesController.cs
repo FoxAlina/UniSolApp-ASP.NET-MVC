@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UniversalSolutionApplication.Data;
 using UniversalSolutionApplication.Data.Services;
+using UniversalSolutionApplication.Models;
 
 namespace UniversalSolutionApplication.Controllers
 {
@@ -23,6 +24,24 @@ namespace UniversalSolutionApplication.Controllers
             var data = await service.GetAll();
 
             return View(data);
+        }
+
+        //Get: Module/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("ProfilePictureURL, Name, Description")] Module _module)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(_module);
+            }
+
+            service.Add(_module);
+            return RedirectToAction(nameof(Index));
         }
 
     }
