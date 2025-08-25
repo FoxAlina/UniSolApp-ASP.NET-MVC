@@ -54,10 +54,13 @@ namespace UniversalSolutionApplication.Models
 
         public void init()
         {
+            this.Id = Guid.NewGuid();
             this.CreatedDateTime = DateTime.UtcNow;
             this.DomainType = DomainType.Private;
             this.ItemStatus = ItemStatus.Open;
             this.General = true;
+
+            this.UserId = this.Id;
         }
     }
 }
