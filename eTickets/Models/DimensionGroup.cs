@@ -13,9 +13,6 @@ namespace UniversalSolutionApplication.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { set; get; }
 
-        [MaxLength(20)]
-        public string SurrogateId { get; set; }
-
         [MaxLength(100)]
         public string Name { get; set; }
         [MaxLength(250)]

@@ -13,8 +13,6 @@ namespace UniversalSolutionApplication.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { set; get; }
 
-        [MaxLength(20)]
-        public string SurrogateId { get; set; }
         public string? ProfilePictureURL { set; get; }
         [Display(Name = "Name")]
         [MaxLength(30, ErrorMessage = "Maximum length is 30 simbols.")]

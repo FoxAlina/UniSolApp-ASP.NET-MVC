@@ -14,8 +14,6 @@ namespace UniversalSolutionApplication.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid LotId { set; get; }
 
-        [MaxLength(20)]
-        public string SurrogateId { get; set; }
         public DimensionLineType Type { get; set; }
         public int? Integer { get; set; }
         public double? Double { get; set; }

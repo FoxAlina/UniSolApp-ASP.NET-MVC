@@ -13,9 +13,6 @@ namespace UniversalSolutionApplication.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid LotId { set; get; }
 
-        [MaxLength(20)]
-        public string SurrogateId { get; set; }
-
         public DateTime CreatedDateTime { get; set; }
 
         // Relationships

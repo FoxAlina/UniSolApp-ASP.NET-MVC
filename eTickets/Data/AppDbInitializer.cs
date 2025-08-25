@@ -28,29 +28,26 @@ namespace UniversalSolutionApplication.Data
                         new User()
                         {
                             Id = userId,
-                            SurrogateId = "User-001",
                             Name = "User",
                             Surname = "One",
                             Password = "One",
-                            CreatedDateTime = DateTime.Today
+                            CreatedDateTime = DateTime.UtcNow
                         },
                         new User()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "User-002",
                             Name = "User",
                             Surname = "Two",
                             Password = "Two",
-                            CreatedDateTime = DateTime.Today
+                            CreatedDateTime = DateTime.UtcNow
                         },
                         new User()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "User-003",
                             Name = "User",
                             Surname = "Three",
                             Password = "Three",
-                            CreatedDateTime = DateTime.Today
+                            CreatedDateTime = DateTime.UtcNow
                         }
                     });
                 }
@@ -62,10 +59,9 @@ namespace UniversalSolutionApplication.Data
                         new Item()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "Item-001",
                             Name = "Item 1",
                             Description = "Item number one.",
-                            CreatedDateTime = DateTime.Today,
+                            CreatedDateTime = DateTime.UtcNow,
                             UserId = userId,
                             ModuleId = moduleId,
                             ModuleUserId = userId
@@ -73,10 +69,9 @@ namespace UniversalSolutionApplication.Data
                         new Item()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "Item-002",
                             Name = "Item 2",
                             Description = "Item number two.",
-                            CreatedDateTime = DateTime.Today,
+                            CreatedDateTime = DateTime.UtcNow,
                             UserId = userId,
                             ModuleId = moduleId,
                             ModuleUserId = userId
@@ -84,10 +79,9 @@ namespace UniversalSolutionApplication.Data
                         new Item()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "Item-003",
                             Name = "Item 3",
                             Description = "Item number three.",
-                            CreatedDateTime = DateTime.Today,
+                            CreatedDateTime = DateTime.UtcNow,
                             UserId = userId,
                             ModuleId = moduleId,
                             ModuleUserId = userId
@@ -102,28 +96,25 @@ namespace UniversalSolutionApplication.Data
                         new Module()
                         {
                             Id = moduleId,
-                            SurrogateId = "Module-001",
                             Name = "Module 1",
                             Description = "Module number one.",
-                            CreatedDateTime = DateTime.Today,
+                            CreatedDateTime = DateTime.UtcNow,
                             UserId = userId
                         },
                         new Module()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "Module-002",
                             Name = "Module 2",
                             Description = "Module number two.",
-                            CreatedDateTime = DateTime.Today,
+                            CreatedDateTime = DateTime.UtcNow,
                             UserId = userId
                         },
                         new Module()
                         {
                             Id = Guid.NewGuid(),
-                            SurrogateId = "Module-003",
                             Name = "Module 3",
                             Description = "Module number three.",
-                            CreatedDateTime = DateTime.Today,
+                            CreatedDateTime = DateTime.UtcNow,
                             UserId = userId
                         }
                     });

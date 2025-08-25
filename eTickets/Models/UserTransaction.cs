@@ -13,8 +13,6 @@ namespace UniversalSolutionApplication.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { set; get; }
 
-        [MaxLength(20)]
-        public string SurrogateId { get; set; }
         public UserTransType TransType { get; set; }
         public ItemModuleListType RefType { get; set; }
         public DateTime CreatedDateTime { get; set; }
