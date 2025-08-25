@@ -49,9 +49,31 @@ namespace UniversalSolutionApplication.Controllers
         {
             var module = await service.GetByIdAsync(_id);
 
-            if (module == null) return View("Empty");
+            if (module == null) return View("NotFound");
 
             return View(module);
+        }
+
+        //Get: Module/Edit
+        public async Task<IActionResult> Edit(Guid _id)
+        {
+            var module = await service.GetByIdAsync(_id);
+
+            if (module == null) return View("NotFound");
+
+            return View(module);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Guid _id, [Bind("Id, ProfilePictureURL, Name, Description")] Module _module)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(_module);
+            }
+
+            await service.UpdateAsync(_id, _module);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

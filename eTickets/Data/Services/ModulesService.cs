@@ -37,9 +37,11 @@ namespace UniversalSolutionApplication.Data.Services
             return await context.Modules.FirstOrDefaultAsync(n => n.Id == _id);
         }
 
-        public Module Update(Guid _id, Module _newModule)
+        public async Task<Module> UpdateAsync(Guid _id, Module _newModule)
         {
-            throw new NotImplementedException();
+            context.Update(_newModule);
+            await context.SaveChangesAsync();
+            return _newModule;
         }
     }
 }

@@ -53,5 +53,13 @@ namespace UniversalSolutionApplication.Models
 
         public Guid UserId { get; set; }
         public User User { get; set; }
+
+        public void init()
+        {
+            this.CreatedDateTime = DateTime.UtcNow;
+            this.DomainType = DomainType.Private;
+            this.ItemStatus = ItemStatus.Open;
+            this.General = true;
+        }
     }
 }

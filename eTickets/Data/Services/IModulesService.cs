@@ -11,7 +11,7 @@ namespace UniversalSolutionApplication.Data.Services
         Task<IEnumerable<Module>> GetAllAsync();
         Task<Module> GetByIdAsync(Guid _id);
         Task AddAsync(Module _module);
-        Module Update(Guid _id, Module _newModule);
+        Task<Module> UpdateAsync(Guid _id, Module _newModule);
         void Delete(Guid _id);
 
     }
