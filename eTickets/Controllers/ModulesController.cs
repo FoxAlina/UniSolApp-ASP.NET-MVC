@@ -35,6 +35,8 @@ namespace UniversalSolutionApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("ProfilePictureURL, Name, Description")] Module _module)
         {
+            _module.init();
+
             if (!ModelState.IsValid)
             {
                 return View(_module);
