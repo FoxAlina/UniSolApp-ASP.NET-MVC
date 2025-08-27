@@ -14,5 +14,6 @@ namespace UniversalSolutionApplication.Data.Services
         Task<Module> UpdateAsync(Guid _id, Module _newModule);
         void Delete(Guid _id);
 
+        Task<User> GetUser();
     }
 }

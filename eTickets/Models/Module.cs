@@ -30,14 +30,14 @@ namespace UniversalSolutionApplication.Models
 
 
         // Relationships
-        public List<Item> Items { get; set; }
-        public List<UserTransaction> Trans { get; set; }
-        public List<Module> ModuleRefs { get; set; }
+        public List<Item>? Items { get; set; }
+        public List<UserTransaction>? Trans { get; set; }
+        public List<Module>? ModuleRefs { get; set; }
 
-        public List<ListHeader> ListHeaders { get; set; }
-        public List<ListHeader> ListHeaderRefs { get; set; }
+        public List<ListHeader>? ListHeaders { get; set; }
+        public List<ListHeader>? ListHeaderRefs { get; set; }
 
-        public List<LinkedFormattingEntity> LinkedFormattingEntities { get; set; }
+        public List<LinkedFormattingEntity>? LinkedFormattingEntities { get; set; }
 
         public Guid? ModuleRefId { get; set; }
         public Guid? ModuleRefUserId { get; set; }
@@ -50,7 +50,7 @@ namespace UniversalSolutionApplication.Models
         public DimensionHeader? DimHeader { get; set; }
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public void init()
         {
@@ -60,7 +60,7 @@ namespace UniversalSolutionApplication.Models
             this.ItemStatus = ItemStatus.Open;
             this.General = true;
 
-            this.UserId = this.Id;
+            //To do: this.UserId = GetUserById
         }
     }
 }

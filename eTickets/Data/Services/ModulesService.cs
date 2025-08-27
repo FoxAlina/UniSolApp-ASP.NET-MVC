@@ -43,5 +43,10 @@ namespace UniversalSolutionApplication.Data.Services
             await context.SaveChangesAsync();
             return _newModule;
         }
+
+        public async Task<User> GetUser()
+        {
+            return await context.Users.FirstOrDefaultAsync();
+        }
     }
 }

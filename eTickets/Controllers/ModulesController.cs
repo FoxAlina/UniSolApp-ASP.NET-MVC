@@ -36,6 +36,8 @@ namespace UniversalSolutionApplication.Controllers
         public async Task<IActionResult> Create([Bind("ProfilePictureURL, Name, Description")] Module _module)
         {
             _module.init();
+            User user = await service.GetUser();
+            _module.UserId = user.Id;
 
             if (!ModelState.IsValid)
             {
