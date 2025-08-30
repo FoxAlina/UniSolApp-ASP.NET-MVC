@@ -54,13 +54,21 @@ namespace UniversalSolutionApplication.Models
 
         public void init()
         {
-            this.Id = Guid.NewGuid();
-            this.CreatedDateTime = DateTime.UtcNow;
-            this.DomainType = DomainType.Private;
-            this.ItemStatus = ItemStatus.Open;
-            this.General = true;
+            Id = Guid.NewGuid();
+            CreatedDateTime = DateTime.UtcNow;
+            DomainType = DomainType.Private;
+            ItemStatus = ItemStatus.Open;
+            General = true;
 
             //To do: this.UserId = GetUserById
+        }
+
+        public void fillAllFromModule(Module module)
+        {
+            ProfilePictureURL = module.ProfilePictureURL;
+            Name = module.Name;
+            Description = module.Description;
+            DomainType = module.DomainType;
         }
     }
 }

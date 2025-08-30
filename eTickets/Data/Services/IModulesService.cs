@@ -9,10 +9,10 @@ namespace UniversalSolutionApplication.Data.Services
     public interface IModulesService
     {
         Task<IEnumerable<Module>> GetAllAsync();
-        Task<Module> GetByIdAsync(Guid _id);
-        Task AddAsync(Module _module);
-        Task<Module> UpdateAsync(Guid _id, Module _newModule);
-        void Delete(Guid _id);
+        Task<Module> GetByIdAsync(Guid id);
+        Task AddAsync(Module module);
+        Task<Module> UpdateAsync(Module newModule);
+        void Delete(Guid id);
 
         Task<User> GetUser();
     }

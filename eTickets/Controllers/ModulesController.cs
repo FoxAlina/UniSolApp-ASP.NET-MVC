@@ -12,16 +12,16 @@ namespace UniversalSolutionApplication.Controllers
 {
     public class ModulesController : Controller
     {
-        private readonly IModulesService service;
+        private readonly IModulesService _service;
 
-        public ModulesController(IModulesService _service)
+        public ModulesController(IModulesService service)
         {
-            service = _service;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var data = await service.GetAllAsync();
+            var data = await _service.GetAllAsync();
 
             return View(data);
         }
@@ -33,25 +33,25 @@ namespace UniversalSolutionApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("ProfilePictureURL, Name, Description")] Module _module)
+        public async Task<IActionResult> Create([Bind("ProfilePictureURL, Name, Description")] Module module)
         {
-            _module.init();
-            User user = await service.GetUser();
-            _module.UserId = user.Id;
+            module.init();
+            User user = await _service.GetUser();
+            module.UserId = user.Id;
 
             if (!ModelState.IsValid)
             {
-                return View(_module);
+                return View(module);
             }
 
-            await service.AddAsync(_module);
+            await _service.AddAsync(module);
             return RedirectToAction(nameof(Index));
         }
 
         //Get: Module/Details/Module1
-        public async Task<IActionResult> Details(Guid _id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            var module = await service.GetByIdAsync(_id);
+            var module = await _service.GetByIdAsync(id);
 
             if (module == null) return View("NotFound");
 
@@ -59,9 +59,9 @@ namespace UniversalSolutionApplication.Controllers
         }
 
         //Get: Module/Edit
-        public async Task<IActionResult> Edit(Guid _id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var module = await service.GetByIdAsync(_id);
+            var module = await _service.GetByIdAsync(id);
 
             if (module == null) return View("NotFound");
 
@@ -69,14 +69,14 @@ namespace UniversalSolutionApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid _id, [Bind("Id, ProfilePictureURL, Name, Description")] Module _module)
+        public async Task<IActionResult> Edit(Module module)
         {
             if (!ModelState.IsValid)
             {
-                return View(_module);
+                return View(module);
             }
 
-            await service.UpdateAsync(_id, _module);
+            await _service.UpdateAsync(module);
             return RedirectToAction(nameof(Index));
         }
     }
