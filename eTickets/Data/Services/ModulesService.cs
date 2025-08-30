@@ -22,9 +22,11 @@ namespace UniversalSolutionApplication.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Modules.FirstOrDefaultAsync(n => n.Id == id);
+            _context.Modules.Remove(result);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Module>> GetAllAsync()

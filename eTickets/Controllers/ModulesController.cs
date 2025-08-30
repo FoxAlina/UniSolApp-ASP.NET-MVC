@@ -58,7 +58,7 @@ namespace UniversalSolutionApplication.Controllers
             return View(module);
         }
 
-        //Get: Module/Edit
+        //Get: Module/Edit/Module1
         public async Task<IActionResult> Edit(Guid id)
         {
             var module = await _service.GetByIdAsync(id);
@@ -77,6 +77,28 @@ namespace UniversalSolutionApplication.Controllers
             }
 
             await _service.UpdateAsync(module);
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Get: Module/Delete/Module1
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var module = await _service.GetByIdAsync(id);
+
+            if (module == null) return View("NotFound");
+
+            return View(module);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var module = await _service.GetByIdAsync(id);
+
+            if (module == null) return View("NotFound");
+
+            await _service.DeleteAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
     }

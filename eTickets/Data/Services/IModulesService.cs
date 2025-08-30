@@ -12,7 +12,7 @@ namespace UniversalSolutionApplication.Data.Services
         Task<Module> GetByIdAsync(Guid id);
         Task AddAsync(Module module);
         Task<Module> UpdateAsync(Module newModule);
-        void Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
         Task<User> GetUser();
     }
