@@ -77,7 +77,7 @@ namespace UniversalSolutionApplication.Controllers
             }
 
             await _service.UpdateAsync(module);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = module.Id });
         }
 
         //Get: Module/Delete/Module1
